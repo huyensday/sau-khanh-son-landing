@@ -1,0 +1,48 @@
+:root{
+/* --- Base palette (from DESIGN SPECIFICATION color table) --- */
+--durian-gold:#F39C12;      /* Sầu Vàng Cơm */
+--durian-gold-bright:#FFB93E;
+--durian-gold-deep:#C87F0A;
+--garden-green:#27AE60;     /* Xanh Vỏ Vườn */
+--garden-green-bright:#3FD07C;
+--garden-green-deep:#1B8449;
+--deep-forest:#0E1A14;      /* page ground */
+--deep-forest-ink:#050B08;  /* gradient end */
+--forest-raised:#16271E;    /* FAQ / accordion surface */
+--glass-dark:rgba(20,35,27,.65);
+--pain-grey:#1C1C1C;        /* pain-point cards */
+--frost:#F0F8FF;            /* Tuyết Cấp Đông */
+--pure-white:#FFFFFF;
+--warm-neutral:#E0E0E0;
+--shell-black:#111111;      /* mascot sunglasses */
+--hairline:rgba(255,255,255,.10);
+--hairline-strong:rgba(255,255,255,.18);
+
+/* --- Semantic aliases --- */
+--bg-page:var(--deep-forest);
+--bg-page-gradient:linear-gradient(180deg,#0E1A14 0%,#050B08 100%); /* @kind other */
+--surface-card:var(--glass-dark);
+--surface-raised:var(--forest-raised);
+--surface-negative:var(--pain-grey);
+--border-card:var(--hairline);
+--border-card-hover:var(--hairline-strong);
+--border-positive:var(--garden-green);
+
+--text-heading:var(--pure-white);
+--text-body:var(--warm-neutral);
+--text-muted:var(--frost);
+--text-highlight:var(--durian-gold);
+--text-on-gold:#1A1206;
+--text-on-green:#04150B;
+
+--action-primary:var(--durian-gold);
+--action-primary-hover:var(--durian-gold-bright);
+--action-primary-press:var(--durian-gold-deep);
+--action-secondary:var(--garden-green);
+--action-secondary-hover:var(--garden-green-bright);
+--action-secondary-press:var(--garden-green-deep);
+
+--status-positive:var(--garden-green);
+--status-negative:#E5534B;
+--status-cold:var(--frost);
+}

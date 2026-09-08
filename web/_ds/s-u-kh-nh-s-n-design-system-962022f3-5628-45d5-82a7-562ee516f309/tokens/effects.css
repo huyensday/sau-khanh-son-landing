@@ -1,0 +1,19 @@
+:root{
+--glass-blur:blur(14px); /* @kind other */
+--overlay-blur:blur(12px); /* @kind other */
+--overlay-scrim:rgba(0,0,0,.62); /* @kind color */
+
+--shadow-card:0 18px 48px rgba(0,0,0,.45);
+--shadow-card-hover:0 26px 64px rgba(0,0,0,.55);
+--shadow-modal:0 40px 120px rgba(0,0,0,.7);
+--shadow-inset-top:inset 0 1px 0 rgba(255,255,255,.10);
+--shadow-press:inset 0 3px 8px rgba(0,0,0,.45);
+
+--glow-gold:0 0 0 1px rgba(243,156,18,.45),0 10px 34px rgba(243,156,18,.38);
+--glow-gold-strong:0 0 0 1px rgba(243,156,18,.7),0 14px 46px rgba(243,156,18,.55);
+--glow-green:0 0 0 1px rgba(39,174,96,.45),0 10px 30px rgba(39,174,96,.32);
+--glow-frost:0 0 28px rgba(240,248,255,.35);
+
+--protection-gradient:linear-gradient(180deg,rgba(5,11,8,0) 0%,rgba(5,11,8,.85) 70%,#050B08 100%); /* @kind other */
+--frost-veil:radial-gradient(120% 90% at 50% 0%,rgba(240,248,255,.14) 0%,rgba(240,248,255,0) 60%); /* @kind other */
+}

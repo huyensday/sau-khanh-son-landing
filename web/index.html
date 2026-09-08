@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><script src="./ds-base.js"></script><script>window.SKS_BED_TRACK="assets/nhac-nen.mp3";
+/* DÁN URL GOOGLE APPS SCRIPT VÀO GIỮA 2 DẤU NGOẶC KÉP DƯỚI ĐÂY để đơn hàng chạy về Google Sheet */
+window.SKS_SHEET_URL="https://script.google.com/macros/s/AKfycbyaDGLiJDRGAsptLhWeK8LAgXI0hRhWe_POwKDcbW7WKc1MS_WzG4Ga_flDMubejMdTbg/exec";</script><script src="./sound.js"></script><style>html,body{margin:0}*{box-sizing:border-box}a{color:#3FD07C;text-decoration:none}a:hover{color:#F39C12}@keyframes sks-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}@keyframes sks-vapor{0%{opacity:.15;transform:translateY(6px) scale(.96)}50%{opacity:.45;transform:translateY(-6px) scale(1.04)}100%{opacity:.15;transform:translateY(6px) scale(.96)}}@keyframes sks-intro-in{0%{opacity:0;transform:translateY(14px)}100%{opacity:1;transform:translateY(0)}}@keyframes sks-intro-fruit{0%{opacity:0;transform:scale(.86) rotate(-4deg)}60%{opacity:1;transform:scale(1.03) rotate(1deg)}100%{opacity:1;transform:scale(1) rotate(0)}}@keyframes sks-intro-mascot{0%{opacity:0;transform:translate(70px,60px) scale(.5)}65%{opacity:1;transform:translate(0,-10px) scale(1.08)}100%{opacity:1;transform:translate(0,0) scale(1)}}@keyframes sks-shot{0%{opacity:0;transform:scale(1.16)}14%{opacity:1}76%{opacity:1}100%{opacity:0;transform:scale(1.01)}}@keyframes sks-flare{0%{opacity:0;transform:scale(.4)}50%{opacity:.9;transform:scale(1.15)}100%{opacity:0;transform:scale(1.5)}}@keyframes sks-speck{0%{opacity:0;transform:translateY(30px) scale(.6)}30%{opacity:.85}100%{opacity:0;transform:translateY(-90px) scale(1.1)}}@keyframes sks-bob{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-14px) rotate(1.5deg)}}@keyframes sks-pulse-txt{0%,100%{opacity:.55}50%{opacity:1}}@keyframes sks-halfL{0%{transform:translate3d(0,0,0) rotate(0)}100%{transform:translate3d(-46%,6%,0) rotate(-26deg)}}@keyframes sks-halfR{0%{transform:translate3d(0,0,0) rotate(0)}100%{transform:translate3d(46%,6%,0) rotate(26deg)}}@keyframes sks-core{0%{opacity:0;transform:scale(.6)}100%{opacity:1;transform:scale(1)}}@keyframes sks-fly{0%{opacity:0;transform:translateY(0) scale(.35)}30%{opacity:1}100%{opacity:1;transform:translateY(-6%) scale(1)}}@keyframes sks-dissolve{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.5)}}@keyframes sks-burst{0%{opacity:0;transform:scale(.2)}40%{opacity:1}100%{opacity:0;transform:scale(2.6)}}@keyframes sks-land-in{0%{opacity:0;transform:scale(1.25)}100%{opacity:1;transform:scale(1)}}@keyframes sks-hidden{0%,100%{opacity:0;transform:scale(.35)}}</style></helmet>
+<sc-if value="{{ introVisible }}" hint-placeholder-val="{{ true }}">
+<div style="position:fixed;inset:0;z-index:100;background:#050B08;display:grid;place-items:center;overflow:hidden;transition:opacity 700ms cubic-bezier(.4,0,.2,1);opacity:{{ introOpacity }};pointer-events:{{ introPointer }}">
+<img src="assets/intro-vuon.png" alt="Toàn cảnh vườn sầu riêng Khánh Sơn" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(6px) saturate(.85);transform:scale(1.08);opacity:.5">
+<span style="position:absolute;inset:0;background:radial-gradient(70% 60% at 50% 44%,rgba(5,11,8,.15) 0%,rgba(5,11,8,.72) 62%,rgba(5,11,8,.96) 100%);pointer-events:none"></span>
+
+<sc-if value="{{ st4 }}" hint-placeholder-val="{{ false }}">
+<img src="assets/intro-vuon.png" alt="Toàn cảnh vùng đất Khánh Sơn" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:sks-land-in 1500ms cubic-bezier(.16,1,.3,1) both">
+<span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,11,8,.35) 0%,rgba(5,11,8,.55) 45%,rgba(5,11,8,.9) 100%);pointer-events:none"></span>
+</sc-if>
+
+<div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:clamp(14px,3vh,28px);padding:0 20px;text-align:center;max-width:720px">
+
+<sc-if value="{{ stageBox }}" hint-placeholder-val="{{ true }}">
+<div style="position:relative;width:min(62vw,340px);aspect-ratio:1/1">
+<sc-if value="{{ st1 }}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{ crackFruit }}" aria-label="Chạm để mở trái sầu riêng" style="position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:transparent;cursor:pointer;animation:sks-bob 4.5s cubic-bezier(.4,0,.2,1) infinite">
+<img src="assets/intro-trai.png" alt="Trái sầu riêng Khánh Sơn nguyên trái, gai xanh" style="display:block;width:100%;height:100%;object-fit:cover;border-radius:50%;box-shadow:0 26px 60px rgba(0,0,0,.65),0 0 0 1px rgba(39,174,96,.5),0 10px 30px rgba(39,174,96,.32)">
+</button>
+</sc-if>
+<sc-if value="{{ st2 }}" hint-placeholder-val="{{ false }}">
+<img src="assets/intro-trai.png" alt="Nửa vỏ sầu riêng tách ra" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;clip-path:inset(0 50% 0 0);animation:sks-halfL 1400ms 200ms cubic-bezier(.4,0,.2,1) both">
+<img src="assets/intro-trai.png" alt="Nửa vỏ sầu riêng tách ra" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;clip-path:inset(0 0 0 50%);animation:sks-halfR 1400ms 200ms cubic-bezier(.4,0,.2,1) both">
+</sc-if>
+<iframe src="mascot-embed.html" title="Mascot Sầu Nhỏ 3D" style="position:absolute;left:8%;top:6%;width:84%;height:88%;border:0;background:transparent;color-scheme:dark;filter:drop-shadow(0 22px 40px rgba(0,0,0,.6));animation:{{ mascotAnim }}"></iframe>
+</div>
+</sc-if>
+
+<sc-if value="{{ st2 }}" hint-placeholder-val="{{ false }}">
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:clamp(15px,2.6vw,20px);color:#F39C12;text-shadow:0 4px 18px rgba(0,0,0,.8)">Rắc… vỏ nứt — có ai trong này!</span>
+</sc-if>
+
+<sc-if value="{{ st1 }}" hint-placeholder-val="{{ true }}">
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:clamp(15px,2.6vw,20px);letter-spacing:.02em;color:#F0F8FF;text-shadow:0 4px 18px rgba(0,0,0,.8);animation:sks-pulse-txt 2.4s ease-in-out infinite">Chạm để mở vị ngọt Khánh Sơn</span>
+</sc-if>
+
+<sc-if value="{{ st3 }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;align-items:center;gap:14px;animation:sks-intro-in 800ms 200ms cubic-bezier(.16,1,.3,1) both">
+<p style="margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:600;font-size:clamp(15px,2.6vw,20px);line-height:1.5;color:#F0F8FF;text-shadow:0 4px 18px rgba(0,0,0,.8);text-wrap:pretty">“Xin chào! Mình là <em style="font-style:normal;font-weight:800;color:#F39C12">Sầu Nhỏ</em> — người dẫn bạn khám phá Khánh Sơn.”</p>
+<button type="button" onClick="{{ goLanding }}" style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:16px;letter-spacing:.06em;text-transform:uppercase;color:#1A1206;background:linear-gradient(90deg,#C87F0A 0%,#F39C12 50%,#FFB93E 100%);border:0;border-radius:999px;padding:16px 40px;cursor:pointer;box-shadow:0 0 0 1px rgba(243,156,18,.5),0 10px 34px rgba(243,156,18,.45);transition:all 300ms cubic-bezier(.4,0,.2,1)" style-hover="transform:translateY(-2px);box-shadow:0 0 0 1px rgba(243,156,18,.7),0 14px 40px rgba(243,156,18,.6)">Đi thôi!</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ st4 }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;align-items:center;gap:10px;animation:sks-intro-in 900ms 200ms cubic-bezier(.16,1,.3,1) both">
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:900;font-size:clamp(30px,6.4vw,56px);line-height:1.1;letter-spacing:-.02em;color:#F39C12;text-shadow:0 8px 30px rgba(0,0,0,.8)">KHÁNH SƠN</span>
+<span style="font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-weight:500;font-size:clamp(14px,2.4vw,18px);font-style:italic;color:#F0F8FF;text-shadow:0 4px 18px rgba(0,0,0,.8)">Nơi đất lành ươm vị ngọt.</span>
+</div>
+</sc-if>
+
+<button type="button" onClick="{{ skipIntro }}" style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(240,248,255,.7);background:transparent;border:1.5px solid rgba(240,248,255,.22);border-radius:999px;padding:10px 22px;cursor:pointer;transition:all 300ms cubic-bezier(.4,0,.2,1)" style-hover="border-color:#F39C12;color:#F39C12;transform:translateY(-2px)">Bỏ qua, vào trang</button>
+</div>
+<button type="button" onClick="{{ toggleSound }}" aria-label="Bật hoặc tắt nhạc nền" style="position:absolute;right:clamp(16px,4vw,28px);top:clamp(16px,4vw,28px);display:flex;align-items:center;gap:8px;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,248,255,.75);background:rgba(20,35,27,.6);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:9px 16px;cursor:pointer;transition:all 300ms cubic-bezier(.4,0,.2,1)" style-hover="border-color:#F39C12;color:#F39C12">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Icon" name="{{ soundIcon }}" size="{{ 15 }}" color="currentColor" hint-size="15px,15px"></x-import>
+<span>{{ soundLabel }}</span>
+</button>
+</div>
+</sc-if>
+
+<div style="background:linear-gradient(180deg,#0E1A14 0%,#050B08 100%);font-family:'Plus Jakarta Sans','Be Vietnam Pro',system-ui,sans-serif;color:#E0E0E0;min-height:100vh;padding-bottom:8px">
+
+<sc-if value="{{ showPromoBanner }}" hint-placeholder-val="{{ true }}">
+<div style="background:linear-gradient(90deg,#C87F0A 0%,#F39C12 50%,#FFB93E 100%);color:#1A1206">
+<div style="max-width:1200px;margin:0 auto;padding:10px 24px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;text-align:center">
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase">Tặng voucher giảm 20% cho đơn đầu tiên khi mua từ 2 túi!</span>
+</div>
+</div>
+</sc-if>
+
+<header style="position:sticky;top:0;z-index:40;background:rgba(14,26,20,.78);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.10)">
+<div style="max-width:1200px;margin:0 auto;padding:12px clamp(16px,4vw,24px);display:flex;align-items:center;flex-wrap:wrap;gap:12px clamp(16px,3vw,32px)">
+<div style="display:flex;align-items:center;gap:12px">
+<svg viewBox="0 0 44 44" width="42" height="42" aria-label="Sầu Khánh Sơn" style="display:block;flex:none;filter:drop-shadow(0 6px 18px rgba(243,156,18,.35))">
+<rect x="1" y="1" width="42" height="42" rx="13" fill="#16271E" stroke="#27AE60" stroke-width="1.5"></rect>
+<path d="M22 7.5c1.9 2.3 3.1 3.6 4.6 5.6 2.4 3.2 3.6 6.3 3.6 9.4 0 4.9-3.7 8.6-8.2 8.6s-8.2-3.7-8.2-8.6c0-3.1 1.2-6.2 3.6-9.4 1.5-2 2.7-3.3 4.6-5.6z" fill="#F39C12"></path>
+<path d="M22 12.4c1.7 2.4 2.6 4.6 2.6 7.1 0 3.1-1.2 5.2-2.6 6.6-1.4-1.4-2.6-3.5-2.6-6.6 0-2.5.9-4.7 2.6-7.1z" fill="#FFB93E"></path>
+<circle cx="12.5" cy="33" r="2" fill="#F0F8FF"></circle>
+<circle cx="31.5" cy="34.5" r="1.4" fill="#F0F8FF" opacity=".8"></circle>
+<circle cx="33.5" cy="11" r="1.2" fill="#F0F8FF" opacity=".6"></circle>
+</svg>
+<div style="display:flex;flex-direction:column;gap:3px;line-height:1">
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:900;font-size:20px;letter-spacing:-.02em;color:#F39C12">SẦU KHÁNH SƠN</span>
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:600;font-size:8.4px;letter-spacing:.22em;text-transform:uppercase;color:#3FD07C">cấp đông · gen z</span>
+</div>
+</div>
+<nav style="display:flex;flex-wrap:wrap;gap:24px;margin-left:auto;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:500;font-size:15px">
+<a href="#story" style="color:#E0E0E0">Câu chuyện</a><a href="#solution" style="color:#E0E0E0">Giải pháp</a><a href="#catalog" style="color:#E0E0E0">Bảng giá</a><a href="#ship" style="color:#E0E0E0">Giao hàng</a><a href="#faq" style="color:#E0E0E0">FAQ</a>
+</nav>
+<button type="button" onClick="{{ toggleSound }}" aria-label="Bật hoặc tắt nhạc nền" style="display:grid;place-items:center;width:38px;height:38px;color:rgba(240,248,255,.7);background:transparent;border:1px solid rgba(255,255,255,.14);border-radius:999px;cursor:pointer;flex:none;transition:all 300ms cubic-bezier(.4,0,.2,1)" style-hover="border-color:#F39C12;color:#F39C12">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Icon" name="{{ soundIcon }}" size="{{ 16 }}" color="currentColor" hint-size="16px,16px"></x-import>
+</button>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Button" size="sm" on-click="{{ orderCombo }}" hint-size="120px,38px">ĐẶT MUA</x-import>
+</div>
+</header>
+
+<section style="position:relative;overflow:hidden">
+<span style="position:absolute;inset:0;background:radial-gradient(90% 70% at 78% 8%,rgba(243,156,18,.28) 0%,rgba(14,26,20,0) 62%);pointer-events:none"></span>
+
+<div style="position:relative;max-width:1200px;margin:0 auto;padding:clamp(48px,8vw,96px) clamp(16px,4vw,24px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(32px,5vw,64px);align-items:center">
+<div style="display:flex;flex-direction:column;gap:24px;min-width:0">
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Badge" tone="green" hint-size="170px,26px">Gen Z khởi nghiệp</x-import>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Badge" tone="frost" hint-size="180px,26px">Cấp đông lốc xoáy</x-import>
+</div>
+<h1 style="margin: 0; font-family: 'Be Vietnam Pro',system-ui,sans-serif; font-weight: 900; font-size: 48px; line-height: 1.2; letter-spacing: -.02em; color: #fff; text-wrap: pretty; text-align: left">SẦU KHÁNH SƠN CẤP ĐÔNG — <em style="font-style:normal;font-weight:800;color:#F39C12">NGON QUÊN LỐI VỀ</em>, KHÔNG CẦN CỰC CÔNG KHUI!</h1>
+<p style="margin:0;max-width:52ch;font-size:16px;line-height:1.6;color:#E0E0E0;text-wrap:pretty">Múi béo ngậy, cấp đông chuẩn xịn, mở túi chén ngay — chuẩn gu Gen Z chill đỉnh khao khát!</p>
+<div style="display:flex;flex-wrap:wrap;gap:12px">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Button" size="big" pulse="{{ true }}" on-click="{{ orderCombo }}" hint-size="320px,58px">ĐẶT MUA LẠNH TẬN TAY</x-import>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Button" size="big" variant="secondary" on-click="{{ orderTrial }}" hint-size="290px,58px">ĐĂNG KÝ TRẢI NGHIỆM</x-import>
+</div>
+<div style="display:flex;align-items:center;gap:10px;font-size:13px;line-height:1.5;color:rgba(240,248,255,.72)">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Icon" name="snowflake" size="{{ 18 }}" color="#F0F8FF" hint-size="18px,18px"></x-import>
+<span>Thùng xốp giữ nhiệt + đá khô âm 40°C — giao tận tay vẫn đông lạnh chuẩn xịn.</span>
+</div>
+</div>
+<div style="position:relative;aspect-ratio:1/1;min-width:0;border-radius:32px;background:radial-gradient(100% 100% at 50% 0%,rgba(243,156,18,.22) 0%,rgba(20,35,27,.7) 68%);border:1px solid rgba(255,255,255,.10);box-shadow:0 18px 48px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.10);display:grid;place-items:center;padding:32px;text-align:center;animation:sks-float 7s cubic-bezier(.4,0,.2,1) infinite">
+<span style="position:absolute;inset:0;border-radius:32px;background:radial-gradient(120% 90% at 50% 0%,rgba(240,248,255,.14) 0%,rgba(240,248,255,0) 60%);pointer-events:none;animation:sks-vapor 6s ease-in-out infinite"></span>
+<iframe src="mascot-embed.html" title="Mascot Sầu Cool Gen Z — model 3D xoay được" style="position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:32px;background:transparent"></iframe>
+<span style="position:absolute;left:20px;bottom:18px;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:600;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(240,248,255,.6);pointer-events:none">Kéo để xoay mascot 3D</span>
+</div>
+</div></section>
+
+<section style="background:#050B08;border-top:1px solid rgba(255,255,255,.10);border-bottom:1px solid rgba(255,255,255,.10)">
+<div style="max-width:1200px;margin:0 auto;padding:48px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:clamp(20px,3vw,32px);align-items:center">
+<div style="display:flex;align-items:center;gap:14px">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Icon" name="flame" size="{{ 28 }}" color="#F39C12" hint-size="28px,28px"></x-import>
+<div style="display:flex;flex-direction:column;gap:2px"><span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:900;font-size:clamp(22px,3.4vw,26px);line-height:1.1;color:#fff">15.420+</span><span style="font-size:14px;color:#E0E0E0">Túi đã giao thành công mùa này</span></div>
+</div>
+<div style="display:flex;align-items:center;gap:14px">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Icon" name="check" size="{{ 28 }}" color="#3FD07C" hint-size="28px,28px"></x-import>
+<div style="display:flex;flex-direction:column;gap:2px"><span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:900;font-size:clamp(22px,3.4vw,26px);line-height:1.1;color:#fff">4.9/5</span><span style="font-size:14px;color:#E0E0E0">Đánh giá hài lòng từ mọt sầu</span></div>
+</div>
+<div style="display:flex;align-items:center;gap:14px">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Icon" name="truck" size="{{ 28 }}" color="#F0F8FF" hint-size="28px,28px"></x-import>
+<div style="display:flex;flex-direction:column;gap:2px"><span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:900;font-size:clamp(22px,3.4vw,26px);line-height:1.1;color:#fff">Giao 2H</span><span style="font-size:14px;color:#E0E0E0">Nội thành TP. Hồ Chí Minh &amp; Khánh Hoà</span></div>
+</div>
+<div style="display:flex;justify-content:flex-start">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Badge" tone="solidGreen" hint-size="100%,26px">100% sầu riêng chính gốc vườn Khánh Sơn</x-import>
+</div>
+</div>
+</section>
+
+<section style="max-width:1200px;margin:0 auto;padding:clamp(48px,8vw,96px) clamp(16px,4vw,24px);display:flex;flex-direction:column;gap:clamp(28px,4.5vw,48px)">
+<header style="display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center;max-width:760px;margin:0 auto">
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#F39C12">Nỗi đau khách hàng</span>
+<h2 style="margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:clamp(26px,4.6vw,36px);line-height:1.3;letter-spacing:-.02em;color:#fff;text-wrap:pretty">Bạn có đang ngán ngẩm vì những pha “check-in” sầu riêng bất lực?</h2>
+</header>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:24px;align-items:start">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.PainPointCard" icon="dices" title="Khui sầu như đánh bạc" body="Mua nguyên quả về khui mồ hôi hột, mở ra đắng, sượng, cơm lép kẹp." hint-size="100%,130px"></x-import>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.PainPointCard" icon="hand" title="Vất vả &amp; dính dấy" body="Gai đâm đau tay, nhựa dính tùm lum, dọn dẹp phiền phức." hint-size="100%,130px"></x-import>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.PainPointCard" icon="truck" title="Ship xa bị hư" body="Ship xa sầu bị nhão, lên men chua, mất vị ngon ban đầu." hint-size="100%,130px"></x-import>
+</div>
+</section>
+
+<section id="story" style="background:#050B08">
+<div style="max-width:1200px;margin:0 auto;padding:clamp(48px,8vw,96px) clamp(16px,4vw,24px);display:flex;flex-direction:column;gap:clamp(28px,4.5vw,48px)">
+<header style="display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center;max-width:760px;margin:0 auto">
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#F39C12">Câu chuyện khởi nghiệp</span>
+<h2 style="margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:clamp(26px,4.6vw,36px);line-height:1.3;letter-spacing:-.02em;color:#fff;text-wrap:pretty">Tre già măng mọc, đường dài — <em style="font-style:normal;font-weight:800;color:#F39C12">Gen Z tiếp bước dựng tương lai nhà.</em></h2>
+<p style="margin:0;font-size:16px;line-height:1.6;color:#E0E0E0;text-wrap:pretty">Từ vườn sầu riêng của cha mẹ ở Khánh Sơn, tớ tiếp bước — đưa múi vàng quê nhà đi xa mà vẫn giữ trọn hương vị.</p>
+</header>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(20px,3vw,32px);align-items:stretch">
+<div style="position:relative;min-width:0;border-radius:24px;overflow:hidden;border:1px solid rgba(255,255,255,.10);box-shadow:0 18px 48px rgba(0,0,0,.45)">
+<img src="assets/story-khanh-son.jpg" alt="Trái sầu riêng Khánh Sơn tách đôi trên mâm tre, múi vàng óng, phía sau là đồi vườn nắng sớm" style="display:block;width:100%;height:100%;min-height:320px;object-fit:cover">
+</div>
+<div style="position:relative;background:rgba(20,35,27,.65);backdrop-filter:blur(14px);border:1px solid rgba(39,174,96,.55);border-radius:24px;padding:clamp(20px,3.4vw,32px);box-shadow:0 0 0 1px rgba(39,174,96,.35),0 18px 48px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.10);display:flex;flex-direction:column;gap:16px;min-width:0">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Badge" tone="green" hint-size="180px,26px">SẦU RIÊNG KHÁNH SƠN - HƯƠNG NÚI</x-import>
+<p style="margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:500;font-size:clamp(15px,2.1vw,17px);line-height:1.95;color:#F0F8FF;text-wrap:pretty">Khánh Sơn nắng rọi lưng đồi,<br>Sầu riêng chín mọng thơm ngời ngát hương.<br>Cha vun gốc, mẹ dãi trường,<br>Chắt chiu mưa nắng cho vương trái vàng.</p>
+<p style="margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:500;font-size:clamp(15px,2.1vw,17px);line-height:1.95;color:#F0F8FF;text-wrap:pretty">Tre già măng mọc mênh mang,<br>Gen Z tiếp bước rỡ ràng nối cha.<br>Đưa sầu Khánh Sơn vươn xa,<br>Cấp đông khóa chặt đậm đà hương quê.</p>
+<p style="margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:500;font-size:clamp(15px,2.1vw,17px);line-height:1.95;color:#F0F8FF;text-wrap:pretty">Múi vàng béo ngậy say mê,<br>Mở bao ăn liền — vẹn thề ngon nguyên.<br>Tình thương núi thẳm vẹn nguyền,<br>Chắp cánh sản vật vững bền niềm tin.</p>
+</div>
+</div>
+<div style="position:relative;background:rgba(20,35,27,.65);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.10);border-radius:24px;padding:clamp(20px,4vw,48px);box-shadow:0 18px 48px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.10)">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:clamp(20px,3vw,32px)">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.ProcessStep" index="{{ 1 }}" icon="sun" title="Nắng vàng Khánh Sơn" body="Nắng sớm, mưa trưa — ươm nên vị ngọt vừa môi ai." hint-size="100%,160px"></x-import>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.ProcessStep" index="{{ 2 }}" icon="heart-handshake" title="Cha mẹ chắt chiu" body="Từ vườn quê cha mẹ, nâng niu từng mùa sầu mộng." hint-size="100%,160px"></x-import>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.ProcessStep" index="{{ 3 }}" icon="sprout" title="Gen Z tiếp bước" body="Tre già măng mọc đường dài — đưa sầu Khánh Sơn vươn xa." hint-size="100%,160px"></x-import>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.ProcessStep" index="{{ 4 }}" icon="snowflake" title="Giữ trọn hương quê" body="Cấp đông giữ trọn đậm đà, mở bao ăn liền vẹn thề vị ngon." hint-size="100%,160px"></x-import>
+</div>
+</div>
+</div>
+</section>
+
+<section id="solution" style="max-width:1200px;margin:0 auto;padding:clamp(48px,8vw,96px) clamp(16px,4vw,24px);display:flex;flex-direction:column;gap:clamp(28px,4.5vw,48px)">
+<header style="display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center;max-width:760px;margin:0 auto">
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#F39C12">Giải pháp vượt trội</span>
+<h2 style="margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:clamp(26px,4.6vw,36px);line-height:1.3;letter-spacing:-.02em;color:#fff;text-wrap:pretty">Sầu Khánh Sơn cấp đông — giải pháp “cứu rỗi” mọt sầu riêng!</h2>
+</header>
+<div style="position:relative;background:rgba(20,35,27,.65);backdrop-filter:blur(14px);border:1px solid #27AE60;border-radius:24px;padding:clamp(20px,4vw,48px);box-shadow:0 0 0 1px rgba(39,174,96,.45),0 10px 30px rgba(39,174,96,.32),0 18px 48px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.10);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(20px,3vw,32px)">
+<div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+<div style="position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(240,248,255,.22);box-shadow:0 10px 26px rgba(0,0,0,.4)">
+<img src="assets/usp-1-cap-dong.png" alt="Múi sầu riêng cấp đông phủ tuyết trên thìa gỗ" style="display:block;width:100%;aspect-ratio:3/2;object-fit:cover">
+<span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,11,8,0) 55%,rgba(5,11,8,.55) 100%);pointer-events:none"><svg width="160" height="80" viewBox="0 0 160 80" preserveAspectRatio="none" style="position: absolute; left: 228px; top: 132px; width: 160px; height: 80px; overflow: visible; fill: none; stroke: #8a8378; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round"><path d="M 0 80 L 160 0"></path></svg></span>
+</div>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.USPItem" icon="snowflake" tone="frost" title="Mát lạnh dẻo quánh" body="Cấp đông lốc xoáy giữ trọn độ béo, ăn mát lịm như kem gelato." hint-size="100%,90px"></x-import>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+<div style="position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(39,174,96,.45);box-shadow:0 10px 26px rgba(0,0,0,.4)">
+<img src="assets/usp-2-khanh-son.png" alt="Vườn sầu riêng trên đồi núi Khánh Sơn" style="display:block;width:100%;aspect-ratio:3/2;object-fit:cover">
+
+</div>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.USPItem" icon="mountain" tone="green" title="Gốc đất Khánh Sơn" body="Hương vị béo đậm đặc trưng mà không vùng đất nào nhái được." hint-size="100%,90px"></x-import>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+<div style="position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(39,174,96,.45);box-shadow:0 10px 26px rgba(0,0,0,.4)">
+<img src="assets/usp-3-audit.png" alt="Bàn tay đeo găng kiểm tra từng múi sầu riêng trước khi cấp đông" style="display:block;width:100%;aspect-ratio:3/2;object-fit:cover">
+<span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,11,8,0) 55%,rgba(5,11,8,.55) 100%);pointer-events:none"></span>
+</div>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.USPItem" icon="search-check" tone="green" title="Audit 100% từng múi" body="Tớ và cha mẹ tự tay kiểm tra từng múi. Sượng, lỗi — LOẠI NGAY!" hint-size="100%,90px"></x-import>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+<div style="position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(243,156,18,.5);box-shadow:0 10px 26px rgba(0,0,0,.4)">
+<img src="assets/usp-4-tien-loi.png" alt="Túi sầu riêng Khánh Sơn hút chân không mang đi picnic cùng balo và bình nước" style="display:block;width:100%;aspect-ratio:3/2;object-fit:cover">
+<span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,11,8,0) 55%,rgba(5,11,8,.55) 100%);pointer-events:none"></span>
+</div>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.USPItem" icon="shopping-bag" tone="gold" title="Tiện lợi mọi lúc" body="Túi zip hút chân không, mở ra ăn liền — đi học, đi làm, picnic cực chill." hint-size="100%,90px"></x-import>
+</div>
+
+
+</div>
+</section>
+
+<section id="catalog" style="background: #050B08; position: relative">
+<div style="max-width:1200px;margin:0 auto;padding:clamp(48px,8vw,96px) clamp(16px,4vw,24px);display:flex;flex-direction:column;gap:clamp(28px,4.5vw,48px)">
+<header style="display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center;max-width:760px;margin:0 auto">
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#F39C12">Bảng giá &amp; đặt hàng</span>
+<h2 style="margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:clamp(26px,4.6vw,36px);line-height:1.3;letter-spacing:-.02em;color:#fff;text-wrap:pretty">Chọn gu của bạn — Thái dẻo thanh hay Musang béo đỉnh?</h2>
+</header>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(20px,3vw,32px);align-items:start">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.ProductCard" name="Sầu Thái Khánh Sơn (Monthong)" tagline="NỮ HOÀNG DẺO THANH" badge="Khuyên dùng" image="assets/sau-thai-tui.png" image-note="Múi sầu Thái vàng kem nhạt, cơm dày ráo dẻo trong túi hút chân không." specs="{{ thaiSpecs }}" sizes="{{ thaiSizes }}" size="{{ thaiSize }}" on-size-change="{{ setThaiSize }}" primary-label="ĐẶT MUA SẦU THÁI — 89K" secondary-label="ĐĂNG KÝ TRẢI NGHIỆM DÙNG THỬ" on-primary="{{ orderThai }}" on-secondary="{{ orderTrial }}" hint-size="100%,660px" style="border-width: 1px; border-style: solid; border-color: #000000"></x-import>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.ProductCard" name="Musang King Khánh Sơn" tagline="KING OF DURIAN — BÉO ĐỈNH CAO" badge="Best Seller" edge="gold" image="assets/musang-king-tui.png" image-note="Múi Musang King vàng rực rỡ, chất cơm mịn tan, béo ngậy bắt mắt." specs="{{ musangSpecs }}" sizes="{{ musangSizes }}" size="{{ musangSize }}" on-size-change="{{ setMusangSize }}" primary-label="ĐẶT MUA MUSANG KING — 109K" secondary-label="ĐĂNG KÝ TRẢI NGHIỆM DÙNG THỬ" on-primary="{{ orderMusang }}" on-secondary="{{ orderTrial }}" hint-size="100%,660px" style="border-width: 1px; border-style: solid; border-color: #000000"></x-import>
+</div>
+<div style="position:relative;background:rgba(20,35,27,.65);backdrop-filter:blur(14px);border:1px solid rgba(243,156,18,.55);border-radius:24px;padding:clamp(20px,4vw,48px);box-shadow:0 0 0 1px rgba(243,156,18,.45),0 10px 34px rgba(243,156,18,.38),0 18px 48px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.10);display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,32px);align-items:center">
+<div style="flex:1 1 320px;display:flex;flex-direction:column;gap:10px;min-width:0">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Badge" tone="solidGold" hint-size="130px,26px">Best Seller</x-import>
+<h3 style="margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:clamp(18px,2.6vw,22px);line-height:1.4;color:#fff">Combo “Duo Gen Z” — 1 túi Thái 500g + 1 túi Musang King 500g</h3>
+<div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:12px">
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:900;font-size:clamp(26px,4vw,32px);line-height:1.1;color:#F39C12">198.000đ</span>
+<span style="font-size:14px;color:rgba(240,248,255,.7)">tổng 1kg — ăn thử trọn vẹn cả 2 hương vị hot nhất</span>
+</div>
+<p style="margin:0;font-size:15px;line-height:1.6;color:#E0E0E0">Mua 2 túi tặng ngay <em style="font-style:normal;font-weight:800;color:#F39C12">voucher giảm 20%</em> cho đơn đầu tiên — miễn phí ship tận nhà.</p>
+</div>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Button" size="big" on-click="{{ orderCombo }}" hint-size="440px,58px">ĐẶT COMBO MUA 2 — NHẬN VOUCHER 20%</x-import>
+</div>
+</div>
+</section>
+
+<section id="ship" style="max-width:1200px;margin:0 auto;padding:clamp(48px,8vw,96px) clamp(16px,4vw,24px);display:flex;flex-direction:column;gap:clamp(28px,4.5vw,48px)">
+<header style="display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center;max-width:760px;margin:0 auto">
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#F39C12">Khu vực giao hàng</span>
+<h2 style="margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:clamp(26px,4.6vw,36px);line-height:1.3;letter-spacing:-.02em;color:#fff;text-wrap:pretty">Cold chain từ Khánh Sơn tới tận tay bạn</h2>
+</header>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(20px,3vw,32px);align-items:stretch">
+<div style="background: rgba(20,35,27,.65); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,.10); border-radius: 24px; padding: clamp(20px,3.4vw,32px); box-shadow: 0px 0px 0px 1px #27AE6073; display: flex; flex-direction: column; gap: 16px; position: relative; border-color: #27AE60">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Icon" name="truck" size="{{ 28 }}" color="#F39C12" hint-size="28px,28px"></x-import>
+<h3 style="margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:600;font-size:clamp(18px,2.6vw,22px);line-height:1.4;color:#fff">TP.HCM (Sài Gòn)</h3>
+<p style="margin:0;font-size:16px;line-height:1.6;color:#E0E0E0">Giao thần tốc <em style="font-style:normal;font-weight:800;color:#F39C12">2 GIỜ</em> tận tay — đóng túi giữ nhiệt + đá gel.</p>
+</div>
+<div style="background:rgba(20,35,27,.65);backdrop-filter:blur(14px);border:1px solid #27AE60;border-radius:24px;padding:clamp(20px,3.4vw,32px);box-shadow:0 0 0 1px rgba(39,174,96,.45),0 10px 30px rgba(39,174,96,.32),0 18px 48px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.10);display:flex;flex-direction:column;gap:16px">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Icon" name="mountain" size="{{ 28 }}" color="#3FD07C" hint-size="28px,28px"></x-import>
+<h3 style="margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:600;font-size:clamp(18px,2.6vw,22px);line-height:1.4;color:#fff">Khánh Hoà</h3>
+<p style="margin:0;font-size:16px;line-height:1.6;color:#E0E0E0">Giao nhanh <em style="font-style:normal;font-weight:800;color:#F39C12">2 GIỜ</em> nội thành &amp; khu vực lân cận, ngay từ vườn.</p>
+</div>
+<div style="background: rgba(20,35,27,.65); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,.10); border-radius: 24px; padding: clamp(20px,3.4vw,32px); box-shadow: 0px 0px 0px 1px #27AE6073; display: flex; flex-direction: column; gap: 16px; border-color: #27AE60">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Icon" name="snowflake" size="{{ 28 }}" color="#F0F8FF" hint-size="28px,28px"></x-import>
+<h3 style="margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:600;font-size:clamp(18px,2.6vw,22px);line-height:1.4;color:#fff">Ship toàn quốc</h3>
+<p style="margin:0;font-size:16px;line-height:1.6;color:#E0E0E0">Thùng xốp giữ nhiệt + đá khô âm 40°C&nbsp; &nbsp;<em style="font-style: normal; font-weight: 800; color: rgb(243, 156, 18);">24-48H</em> tới tay vẫn đông lạnh chuẩn xịn.</p>
+</div>
+</div>
+</section>
+
+<section style="background:#050B08">
+<div style="max-width:1200px;margin:0 auto;padding:clamp(48px,8vw,96px) clamp(16px,4vw,24px);display:flex;flex-direction:column;gap:clamp(28px,4.5vw,48px)">
+<header style="display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center;max-width:760px;margin:0 auto">
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#F39C12">Feedback khách real</span>
+<h2 style="margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:clamp(26px,4.6vw,36px);line-height:1.3;letter-spacing:-.02em;color:#fff;text-wrap:pretty">Mọt sầu nhắn tớ gì sau khi bóc túi?</h2>
+</header>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(20px,3vw,32px);align-items:start">
+<div style="background:rgba(20,35,27,.65);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.10);border-radius:24px;padding:clamp(20px,3.4vw,32px);box-shadow:0 18px 48px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.10);display:flex;flex-direction:column;gap:16px">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Badge" tone="frost" hint-size="200px,26px">Lan Anh · Gen Z Sài Gòn</x-import>
+<p style="margin:0;font-size:16px;line-height:1.6;color:#fff;text-wrap:pretty">“Đặt 2H là có ngay ở Q3, túi sầu lạnh ngắt mở ra ăn dẻo quánh như kem. Lại còn được tặng voucher 20% cho đơn sau nữa chứ!”</p>
+</div>
+<div style="background:rgba(20,35,27,.65);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.10);border-radius:24px;padding:clamp(20px,3.4vw,32px);box-shadow:0 18px 48px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.10);display:flex;flex-direction:column;gap:16px">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Badge" tone="frost" hint-size="200px,26px">Thành Nam · Nha Trang</x-import>
+<p style="margin:0;font-size:16px;line-height:1.6;color:#fff;text-wrap:pretty">“Sầu Musang King 109k mà chất lượng xịn đét, béo ngậy đậm đà. Đóng gói rất sạch sẽ và lịch sự.”</p>
+</div>
+</div>
+</div>
+</section>
+
+<section id="faq" style="max-width:1200px;margin:0 auto;padding:clamp(48px,8vw,96px) clamp(16px,4vw,24px);display:flex;flex-direction:column;gap:clamp(28px,4.5vw,48px)">
+<header style="display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center;max-width:760px;margin:0 auto">
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#F39C12">Bảo hành &amp; cam kết</span>
+<h2 style="margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:clamp(26px,4.6vw,36px);line-height:1.3;letter-spacing:-.02em;color:#fff;text-wrap:pretty">Mua hàng Gen Z — Uy tín chuẩn 100%!</h2>
+</header>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.WarrantyNotice" badge="1-đổi-1 hoặc hoàn tiền 100% trong 24H" title="Nhận hàng không đúng mô tả? Múi bị sượng, đắng hay chất lượng kém?" points="{{ warrantyPoints }}" footnote="Rủi ro bằng 0 cho khách hàng — áp dụng mọi đơn giao lạnh từ Khánh Sơn, toàn quốc." hint-size="100%,240px"></x-import>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(20px,3vw,32px);align-items:start">
+<div style="display:flex;flex-direction:column;gap:12px">
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#F39C12">FAQ</span>
+<h2 style="margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:clamp(26px,4.6vw,36px);line-height:1.3;letter-spacing:-.02em;color:#fff">Câu hỏi thường gặp</h2>
+<p style="margin:0;font-size:16px;line-height:1.6;color:#E0E0E0">Còn thắc mắc gì cứ nhắn tớ nha!</p>
+</div>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Accordion" items="{{ faqItems }}" hint-size="100%,260px"></x-import>
+</div>
+</section>
+
+<footer style="border-top:1px solid rgba(255,255,255,.10);background:#050B08">
+<div style="max-width:1200px;margin:0 auto;padding:48px 24px;display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,32px);align-items:flex-start">
+<div style="flex:1 1 280px;display:flex;flex-direction:column;gap:16px;min-width:0">
+<div style="display:flex;align-items:center;gap:12px">
+<svg viewBox="0 0 44 44" width="38" height="38" aria-label="Sầu Khánh Sơn" style="display:block;flex:none">
+<rect x="1" y="1" width="42" height="42" rx="13" fill="#16271E" stroke="#27AE60" stroke-width="1.5"></rect>
+<path d="M22 7.5c1.9 2.3 3.1 3.6 4.6 5.6 2.4 3.2 3.6 6.3 3.6 9.4 0 4.9-3.7 8.6-8.2 8.6s-8.2-3.7-8.2-8.6c0-3.1 1.2-6.2 3.6-9.4 1.5-2 2.7-3.3 4.6-5.6z" fill="#F39C12"></path>
+<path d="M22 12.4c1.7 2.4 2.6 4.6 2.6 7.1 0 3.1-1.2 5.2-2.6 6.6-1.4-1.4-2.6-3.5-2.6-6.6 0-2.5.9-4.7 2.6-7.1z" fill="#FFB93E"></path>
+<circle cx="12.5" cy="33" r="2" fill="#F0F8FF"></circle>
+<circle cx="31.5" cy="34.5" r="1.4" fill="#F0F8FF" opacity=".8"></circle>
+</svg>
+<div style="display:flex;flex-direction:column;gap:3px;line-height:1">
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:900;font-size:18px;letter-spacing:-.02em;color:#F39C12">SẦU KHÁNH SƠN</span>
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:600;font-size:7.6px;letter-spacing:.22em;text-transform:uppercase;color:#3FD07C">cấp đông · gen z</span>
+</div>
+</div>
+<p style="margin:0;font-size:14px;line-height:1.6;color:#E0E0E0;max-width:42ch">Sầu riêng Khánh Sơn chính hiệu — không sượng, không cay đắng, chỉ có BÉO NGẬY &amp; CHIU CHIU!</p>
+</div>
+<div style="flex: 0 1 240px; display: flex; flex-direction: column; gap: 10px; background-color: var(--deep-forest-ink)">
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#F39C12">Liên hệ</span>
+<span style="font-size: 14px; color: var(--garden-green-bright)">Khánh Sơn, Khánh Hoà</span>
+<a href="https://zalo.me/09xxxxx" style="font-size:14px">Zalo: 09xxxxx</a>
+<a href="mailto:parkraekuyng@gmail.com" style="font-size:14px">parkraekuyng@gmail.com</a>
+</div>
+<div style="flex:0 1 240px;display:flex;flex-direction:column;gap:10px">
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#F39C12">Điều hướng</span>
+<a href="#catalog" style="font-size:14px">Bảng giá &amp; đặt hàng</a>
+<a href="#ship" style="font-size:14px">Khu vực giao hàng</a>
+<a href="#faq" style="font-size:14px">FAQ &amp; bảo hành</a>
+</div>
+</div>
+</footer>
+
+<sc-if value="{{ showStickyBar }}" hint-placeholder-val="{{ true }}">
+<div style="position:sticky;bottom:0;z-index:45;background:rgba(14,26,20,.92);backdrop-filter:blur(14px);border-top:1px solid rgba(243,156,18,.4)">
+<div style="max-width:1200px;margin:0 auto;padding:12px 24px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between">
+<div style="display:flex;flex-direction:column;gap:2px;min-width:0">
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#3FD07C">Ưu đãi voucher 20% còn</span>
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:900;font-size:clamp(20px,3vw,24px);line-height:1.1;letter-spacing:.02em;color:#F0F8FF">{{ countdown }}</span>
+</div>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Button" on-click="{{ orderCombo }}" hint-size="300px,48px">ĐẶT MUA 2 TÚI — GIẢM 20%</x-import>
+</div>
+</div>
+</sc-if>
+
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Modal" open="{{ modalOpen }}" on-close="{{ closeModal }}" width="{{ 560 }}" title="XÁC NHẬN ĐƠN HÀNG GIAO LẠNH TẬN TAY" subtitle="Điền thông tin, tớ gọi xác nhận rồi đóng thùng lạnh giao ngay." hint-size="0px,0px">
+<sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px;align-items:flex-start;padding:8px 0">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Badge" tone="solidGreen" hint-size="200px,26px">Đã nhận đơn của bạn!</x-import>
+<p style="margin:0;font-size:16px;line-height:1.6;color:#F0F8FF;text-wrap:pretty">Tớ nhận được đơn rồi nha! Tớ sẽ gọi/nhắn Zalo xác nhận trong vòng 30 phút rồi đóng thùng lạnh giao ngay.</p>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Button" size="big" on-click="{{ closeModal }}" hint-size="200px,58px">ĐÓNG</x-import>
+</div>
+</sc-if>
+<sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:20px">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Input" label="Sản phẩm bạn chọn" value="{{ selectedProduct }}" read-only="{{ true }}" hint-size="100%,72px"></x-import>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.OptionGroup" label="Loại sầu" options="{{ variantOptions }}" value="{{ variant }}" on-change="{{ setVariant }}" hint-size="100%,90px"></x-import>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:clamp(16px,3vw,24px)">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.OptionGroup" label="Size túi" options="{{ sizeOptions }}" value="{{ formSize }}" on-change="{{ setFormSize }}" hint-size="100%,90px"></x-import>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.OptionGroup" label="Số lượng túi" options="{{ qtyOptions }}" value="{{ qty }}" on-change="{{ setQty }}" hint-size="100%,90px"></x-import>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:clamp(16px,3vw,24px)">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Input" label="Họ tên" name="name" value="{{ fName }}" on-change="{{ onName }}" placeholder="Nguyễn Văn A" required="{{ true }}" hint-size="100%,72px"></x-import>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Input" label="Số điện thoại / Zalo" name="phone" type="tel" value="{{ fPhone }}" on-change="{{ onPhone }}" placeholder="09xx xxx xxx" required="{{ true }}" hint-size="100%,72px"></x-import>
+</div>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Input" label="Địa chỉ giao hàng" name="address" value="{{ fAddress }}" on-change="{{ onAddress }}" placeholder="Số nhà, đường, phường/xã, tỉnh/thành" required="{{ true }}" hint-size="100%,72px"></x-import>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.OptionGroup" label="Khung giờ muốn nhận" options="{{ slotOptions }}" value="{{ slot }}" on-change="{{ setSlot }}" hint-size="100%,90px"></x-import>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Input" label="Ghi chú cho shop" name="note" value="{{ fNote }}" on-change="{{ onNote }}" placeholder="VD: giao giờ hành chính, gọi trước khi tới…" multiline="{{ true }}" rows="{{ 3 }}" hint-size="100%,120px"></x-import>
+<sc-if value="{{ formError }}" hint-placeholder-val="{{ false }}">
+<span style="font-size:14px;line-height:1.5;color:#E5534B">{{ formError }}</span>
+</sc-if>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Button" size="big" on-click="{{ submitOrder }}" hint-size="100%,58px">{{ submitLabel }}</x-import>
+<span style="font-size:13px;line-height:1.5;color:rgba(240,248,255,.6)">Đơn của bạn gửi trực tiếp về Google Sheet của shop. Tớ gọi xác nhận trong 30 phút — chưa cần thanh toán gì trước nha!</span>
+</div>
+</sc-if>
+</x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showPromoBanner&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Chuyển đổi&quot;},&quot;showStickyBar&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Chuyển đổi&quot;},&quot;sheetsWebhookUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Nhận đơn&quot;,&quot;label&quot;:&quot;Google Apps Script Web App URL&quot;}}">
+class Component extends DCLogic {
+  state = {
+    modalOpen: false, product: "", thaiSize: "500g", musangSize: "500g", seconds: 899,
+    variant: "Sầu Thái", formSize: "500g", qty: "1", slot: "Bất kỳ",
+    name: "", phone: "", address: "", note: "",
+    sending: false, sent: false, error: "",
+    introPhase: "play", introStage: 1, soundOn: false
+  };
+
+  componentDidMount() {
+    this.timer = setInterval(() => {
+      this.setState(s => ({ seconds: s.seconds > 0 ? s.seconds - 1 : 899 }));
+    }, 1000);
+
+    this.stageTimers = [];
+
+    /* nhạc chỉ khởi động sau tương tác đầu tiên — không bao giờ tự phát khi load */
+    this.firstGesture = () => {
+      if (!window.SKSAudio) return;
+      window.SKSAudio.start();
+      window.SKSAudio.setScene(this.state.introPhase === "gone" ? "page" : "wait");
+      this.setState({ soundOn: !window.SKSAudio.muted });
+    };
+    ["pointerdown", "keydown"].forEach(ev =>
+      window.addEventListener(ev, this.firstGesture, { once: true, passive: true })
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    clearTimeout(this.introGone);
+    (this.stageTimers || []).forEach(clearTimeout);
+    ["pointerdown", "keydown"].forEach(ev => window.removeEventListener(ev, this.firstGesture));
+    if (window.SKSAudio) window.SKSAudio.stop();
+  }
+
+  cue(name) {
+    if (window.SKSAudio) window.SKSAudio.setScene(name);
+  }
+
+  finishIntro() {
+    if (this.state.introPhase !== "play") return;
+    (this.stageTimers || []).forEach(clearTimeout);
+    this.setState({ introPhase: "fading" });
+    this.cue("page");
+    this.introGone = setTimeout(() => this.setState({ introPhase: "gone" }), 750);
+  }
+
+  crackFruit() {
+    if (this.state.introStage !== 1) return;
+    this.setState({ introStage: 2 });
+    this.cue("crack");
+    this.stageTimers.push(setTimeout(() => {
+      this.setState({ introStage: 3 });
+      this.cue("meet");
+    }, 2600));
+  }
+
+  goLanding() {
+    if (this.state.introStage !== 3) return;
+    this.setState({ introStage: 4 });
+    this.cue("reveal");
+    this.stageTimers.push(setTimeout(() => this.finishIntro(), 1800));
+  }
+
+  toggleSound() {
+    if (!window.SKSAudio) return;
+    const on = window.SKSAudio.toggle();
+    if (on && window.SKSAudio.started)
+      window.SKSAudio.setScene(this.state.introPhase === "gone" ? "page" : ["wait", "wait", "crack", "meet", "reveal"][this.state.introStage] || "wait");
+    this.setState({ soundOn: on });
+  }
+
+  open(product, variant, size) {
+    this.setState(st => ({
+      modalOpen: true, product, sent: false, error: "",
+      variant: variant || st.variant,
+      formSize: size || st.formSize
+    }));
+  }
+
+  async send() {
+    const s = this.state;
+    if (!s.name.trim() || !s.phone.trim() || !s.address.trim()) {
+      this.setState({ error: "Bạn điền giúp tớ họ tên, số điện thoại và địa chỉ nha!" });
+      return;
+    }
+    if (!/^[0-9+\s().-]{9,}$/.test(s.phone.trim())) {
+      this.setState({ error: "Số điện thoại chưa đúng — bạn kiểm tra lại giúp tớ nha!" });
+      return;
+    }
+    const url = this.props.sheetsWebhookUrl || window.SKS_SHEET_URL || "";
+    const payload = {
+      thoi_gian: new Date().toLocaleString("vi-VN"),
+      san_pham: s.product,
+      loai_sau: s.variant,
+      size_tui: s.formSize,
+      so_luong: s.qty,
+      ho_ten: s.name.trim(),
+      dien_thoai: s.phone.trim(),
+      dia_chi: s.address.trim(),
+      khung_gio: s.slot,
+      ghi_chu: s.note.trim()
+    };
+    this.setState({ sending: true, error: "" });
+    try {
+      if (url) {
+        await fetch(url, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+          body: new URLSearchParams(payload).toString()
+        });
+      } else {
+        console.info("[Đơn hàng] Chưa gắn Google Sheet — dữ liệu đơn:", payload);
+      }
+      this.setState({ sending: false, sent: true });
+    } catch (e) {
+      this.setState({ sending: false, error: "Gửi đơn chưa được — bạn thử lại hoặc nhắn Zalo cho tớ nha!" });
+    }
+  }
+
+  renderVals() {
+    const s = this.state;
+    const mm = String(Math.floor(s.seconds / 60)).padStart(2, "0");
+    const ss = String(s.seconds % 60).padStart(2, "0");
+    return {
+      showPromoBanner: this.props.showPromoBanner ?? true,
+      showStickyBar: this.props.showStickyBar ?? true,
+      countdown: "00:" + mm + ":" + ss,
+      introVisible: s.introPhase !== "gone",
+      introOpacity: s.introPhase === "fading" ? 0 : 1,
+      introPointer: s.introPhase === "fading" ? "none" : "auto",
+      stageBox: s.introStage < 4,
+      mascotAnim: s.introStage >= 2
+        ? "sks-fly 1500ms 300ms cubic-bezier(.16,1,.3,1) both"
+        : "sks-hidden 1ms linear both",
+      st1: s.introStage === 1,
+      st2: s.introStage === 2,
+      st3: s.introStage === 3,
+      st4: s.introStage === 4,
+      soundIcon: s.soundOn ? "volume-2" : "volume-x",
+      soundLabel: s.soundOn ? "Nhạc: bật" : "Nhạc: tắt",
+      toggleSound: () => this.toggleSound(),
+      crackFruit: () => this.crackFruit(),
+      goLanding: () => this.goLanding(),
+      skipIntro: () => this.finishIntro(),
+      modalOpen: s.modalOpen,
+      selectedProduct: s.product,
+      closeModal: () => this.setState({ modalOpen: false }),
+      submitOrder: () => this.send(),
+      submitLabel: s.sending ? "ĐANG GỬI ĐƠN…" : "BẤM GỬI ĐƠN — SHOP GIAO NGAY",
+      sent: s.sent,
+      notSent: !s.sent,
+      formError: s.error,
+      variant: s.variant,
+      formSize: s.formSize,
+      qty: s.qty,
+      slot: s.slot,
+      fName: s.name,
+      fPhone: s.phone,
+      fAddress: s.address,
+      fNote: s.note,
+      setVariant: v => this.setState({ variant: v }),
+      setFormSize: v => this.setState({ formSize: v }),
+      setQty: v => this.setState({ qty: v }),
+      setSlot: v => this.setState({ slot: v }),
+      onName: e => this.setState({ name: e.target.value }),
+      onPhone: e => this.setState({ phone: e.target.value }),
+      onAddress: e => this.setState({ address: e.target.value }),
+      onNote: e => this.setState({ note: e.target.value }),
+      variantOptions: [
+        { value: "Sầu Thái", label: "Sầu Thái (Monthong)" },
+        { value: "Musang King", label: "Musang King", flag: "Best Seller" },
+        { value: "Combo Duo Gen Z", label: "Combo Duo Gen Z", flag: "Voucher 20%" }
+      ],
+      sizeOptions: [{ value: "500g", label: "Túi 500g" }, { value: "1kg", label: "Túi 1kg", flag: "Khuyên dùng" }],
+      qtyOptions: [
+        { value: "1", label: "1 túi" },
+        { value: "2", label: "2 túi", flag: "Giảm 20%" },
+        { value: "3", label: "3 túi" },
+        { value: "4+", label: "4 túi trở lên" }
+      ],
+      slotOptions: [
+        { value: "Bất kỳ", label: "Bất kỳ" },
+        { value: "Sáng 8-12h", label: "Sáng 8-12h" },
+        { value: "Chiều 12-18h", label: "Chiều 12-18h" },
+        { value: "Tối 18-21h", label: "Tối 18-21h" }
+      ],
+      thaiSize: s.thaiSize,
+      musangSize: s.musangSize,
+      setThaiSize: v => this.setState({ thaiSize: v }),
+      setMusangSize: v => this.setState({ musangSize: v }),
+      orderThai: () => this.open("Sầu Thái Khánh Sơn (Monthong) — Túi " + s.thaiSize + " · 89.000đ", "Sầu Thái", s.thaiSize),
+      orderMusang: () => this.open("Musang King Khánh Sơn — Túi " + s.musangSize + " · 109.000đ", "Musang King", s.musangSize),
+      orderCombo: () => this.open("Combo “Duo Gen Z” 1kg — 198.000đ + voucher 20%", "Combo Duo Gen Z", "1kg"),
+      orderTrial: () => this.open("Đăng ký trải nghiệm dùng thử"),
+      thaiSpecs: [
+        { label: "Giá ưu đãi", value: "89.000đ / Túi 500g (giá gốc 120.000đ)" },
+        { label: "Cơm sầu", value: "Vàng nhạt, dày dặn, ráo tay (không bết nhão)." },
+        { label: "Hương vị", value: "Ngọt thanh tự nhiên, béo vừa vặn, thơm dịu." },
+        { label: "Điểm cộng", value: "Hạt lép nhỏ, cấp đông ăn dẻo mịn như kem gelato." },
+        { label: "Gu hợp nhất", value: "Thích ngọt thanh, ăn nhiều không ngấy, mới tập ăn sầu." }
+      ],
+      musangSpecs: [
+        { label: "Giá ưu đãi", value: "109.000đ / Túi 500g (giá gốc 150.000đ)" },
+        { label: "Cơm sầu", value: "Vàng nghệ đậm đà, mịn màng như bơ." },
+        { label: "Hương vị", value: "Béo ngậy đậm đà, ngọt đậm, đắng nhẹ hậu vị." },
+        { label: "Điểm cộng", value: "Hạt siêu lép dẹp, thơm nồng nàn quyến rũ." },
+        { label: "Gu hợp nhất", value: "Team mọt sầu chính hiệu, mê vị béo đậm cao cấp." }
+      ],
+      thaiSizes: [{ value: "500g", label: "Túi 500g" }, { value: "1kg", label: "Túi 1kg", flag: "Khuyên dùng" }],
+      musangSizes: [{ value: "500g", label: "Túi 500g" }, { value: "1kg", label: "Túi 1kg", flag: "Best Seller" }],
+      warrantyPoints: [
+        "Bạn chỉ cần QUAY VIDEO KHI BÓC HÀNG, gửi ngay cho tớ.",
+        "Tớ hoàn tiền 100% hoặc gửi túi mới ngay lập tức mà không câu nệ!"
+      ],
+      faqItems: [
+        { q: "Sầu cấp đông ăn có bị mất vị không?", a: "Không nha! Công nghệ cấp đông nhanh giúp giữ trọn độ béo ngậy và độ dẻo của sầu Khánh Sơn. Ăn mát lạnh như kem sầu riêng luôn!" },
+        { q: "Rã đông bao lâu thì ăn ngon nhất?", a: "Để nhiệt độ phòng 10-15 phút cho mềm nhẹ là ăn dẻo như kem gelato." },
+        { q: "Ship xa có bị tan chảy hay hư hỏng không?", a: "Bên tớ đóng thùng xốp giữ nhiệt + đá khô chuyên dụng âm 40°C. Đảm bảo 24-48H tới tay bạn vẫn giữ độ đông lạnh chuẩn xịn." },
+        { q: "Làm sao để nhận voucher giảm 20%?", a: "Bạn chỉ cần đặt từ 2 túi (hoặc Combo Duo Gen Z), hệ thống sẽ tự động gửi mã voucher 20% vào SĐT đăng ký!" }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

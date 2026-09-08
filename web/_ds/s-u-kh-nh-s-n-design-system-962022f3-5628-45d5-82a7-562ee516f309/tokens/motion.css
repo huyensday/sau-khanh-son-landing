@@ -1,0 +1,10 @@
+:root{
+--ease-standard:cubic-bezier(.4,0,.2,1); /* @kind other */
+--ease-out-soft:cubic-bezier(.16,1,.3,1); /* @kind other */
+--ease-bounce:cubic-bezier(.34,1.56,.64,1); /* @kind other */
+--dur-fast:150ms; /* @kind other */
+--dur-base:300ms; /* @kind other */   /* accordion + hover baseline: transition all .3s ease */
+--dur-slow:600ms; /* @kind other */
+--lift-hover:1.03; /* @kind other */  /* product card hover scale */
+--press-scale:.985; /* @kind other */
+}

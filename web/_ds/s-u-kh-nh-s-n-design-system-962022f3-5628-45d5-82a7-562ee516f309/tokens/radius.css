@@ -1,0 +1,8 @@
+:root{
+--radius-xs:6px;
+--radius-sm:10px;
+--radius-md:16px;   /* warranty notice frame */
+--radius-lg:24px;   /* order modal */
+--radius-xl:32px;
+--radius-pill:999px;
+}

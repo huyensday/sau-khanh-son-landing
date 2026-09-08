@@ -1,0 +1,24 @@
+:root{
+--font-display:"Be Vietnam Pro","Segoe UI",system-ui,sans-serif;
+--font-body:"Plus Jakarta Sans","Be Vietnam Pro",system-ui,sans-serif;
+--font-mono:"JetBrains Mono",ui-monospace,monospace;
+
+--weight-black:900;
+--weight-extrabold:800;
+--weight-bold:700;
+--weight-semibold:600;
+--weight-medium:500;
+--weight-regular:400;
+
+/* Desktop sizes / mobile sizes from the type table */
+--text-hero:48px;        --text-hero-mobile:32px;        --leading-hero:1.2;
+--text-section:36px;     --text-section-mobile:26px;     --leading-section:1.3;
+--text-card-heading:22px;--text-card-heading-mobile:18px;--leading-card-heading:1.4;
+--text-body-size:16px;   --text-body-mobile:14px;        --leading-body:1.6;
+--text-cta:18px;         --text-cta-mobile:16px;         --leading-cta:1;
+--text-fine:13px;        --leading-fine:1.5;
+
+--tracking-tight:-.02em;
+--tracking-normal:0;
+--tracking-caps:.08em;
+}

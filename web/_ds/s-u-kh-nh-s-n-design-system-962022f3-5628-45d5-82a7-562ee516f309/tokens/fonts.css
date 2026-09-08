@@ -1,0 +1,7 @@
+/* Sầu Khánh Sơn webfonts.
+   SUBSTITUTION: no font binaries were provided with the source specs.
+   The spec names "Lexend hoặc Be Vietnam Pro" for headings and
+   "Inter hoặc Plus Jakarta Sans" for body. We ship Be Vietnam Pro
+   (best Vietnamese diacritic coverage) + Plus Jakarta Sans from Google Fonts.
+   Replace this @import with local @font-face + binaries if licensed files exist. */
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
