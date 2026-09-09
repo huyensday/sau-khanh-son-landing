@@ -61,10 +61,16 @@ window.SKS_SHEET_URL="https://script.google.com/macros/s/AKfycbyaDGLiJDRGAsptLhW
 
 <button type="button" onClick="{{ skipIntro }}" style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(240,248,255,.7);background:transparent;border:1.5px solid rgba(240,248,255,.22);border-radius:999px;padding:10px 22px;cursor:pointer;transition:all 300ms cubic-bezier(.4,0,.2,1)" style-hover="border-color:var(--durian-gold);color:var(--durian-gold);transform:translateY(-2px)">Bỏ qua, vào trang</button>
 </div>
-<button type="button" onClick="{{ toggleSound }}" aria-label="Bật hoặc tắt nhạc nền" style="position:absolute;right:clamp(16px,4vw,28px);top:clamp(16px,4vw,28px);display:flex;align-items:center;gap:8px;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,248,255,.75);background:rgba(20,35,27,.6);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:9px 16px;cursor:pointer;transition:all 300ms cubic-bezier(.4,0,.2,1)" style-hover="border-color:var(--durian-gold);color:var(--durian-gold)">
+<div style="position:absolute;right:clamp(16px,4vw,28px);top:clamp(16px,4vw,28px);display:flex;align-items:center;gap:10px">
+<button type="button" onClick="{{ toggleTheme }}" aria-label="Đổi giao diện sáng/tối" style="display:flex;align-items:center;gap:8px;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,248,255,.75);background:rgba(20,35,27,.6);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:9px 16px;cursor:pointer;transition:all 300ms cubic-bezier(.4,0,.2,1)" style-hover="border-color:var(--durian-gold);color:var(--durian-gold)">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Icon" name="{{ themeIcon }}" size="{{ 15 }}" color="currentColor" hint-size="15px,15px"></x-import>
+<span>{{ themeLabel }}</span>
+</button>
+<button type="button" onClick="{{ toggleSound }}" aria-label="Bật hoặc tắt nhạc nền" style="display:flex;align-items:center;gap:8px;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,248,255,.75);background:rgba(20,35,27,.6);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:9px 16px;cursor:pointer;transition:all 300ms cubic-bezier(.4,0,.2,1)" style-hover="border-color:var(--durian-gold);color:var(--durian-gold)">
 <x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Icon" name="{{ soundIcon }}" size="{{ 15 }}" color="currentColor" hint-size="15px,15px"></x-import>
 <span>{{ soundLabel }}</span>
 </button>
+</div>
 </div>
 </sc-if>
 
@@ -618,6 +624,7 @@ class Component extends DCLogic {
       skipIntro: () => this.finishIntro(),
       theme: s.theme,
       themeIcon: s.theme === "light" ? "sun" : "moon",
+      themeLabel: s.theme === "light" ? "Sáng" : "Tối",
       toggleTheme: () => this.toggleTheme(),
       modalOpen: s.modalOpen,
       selectedProduct: this.summaryText(),
