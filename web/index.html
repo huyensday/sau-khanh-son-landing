@@ -538,6 +538,25 @@ window.SKS_SHEET_URL="https://script.google.com/macros/s/AKfycbyaDGLiJDRGAsptLhW
 </div>
 </sc-if>
 </x-import>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Modal" open="{{ exitIntentOpen }}" on-close="{{ closeExitIntent }}" width="{{ 440 }}" title="Khoan đã! 🎁" subtitle="Để lại SĐT nhận voucher 20%. Voucher có hiệu lực trong 12 giờ." hint-size="0px,0px">
+<sc-if value="{{ exitSent }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px;align-items:flex-start;padding:8px 0">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Badge" tone="solidGreen" hint-size="200px,26px">Đã nhận SĐT!</x-import>
+<p style="margin:0;font-size:16px;line-height:1.6;color:var(--text-heading)">Tớ sẽ nhắn Zalo gửi mã voucher 20% cho cậu nha!</p>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Button" size="big" on-click="{{ closeExitIntent }}" hint-size="200px,58px">Đóng</x-import>
+</div>
+</sc-if>
+<sc-if value="{{ exitNotSent }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Input" label="Số điện thoại / Zalo" name="exitPhone" type="tel" value="{{ exitPhone }}" on-change="{{ onExitPhone }}" placeholder="09xx xxx xxx" required="{{ true }}" hint-size="100%,72px"></x-import>
+<sc-if value="{{ exitError }}" hint-placeholder-val="{{ false }}">
+<span style="font-size:14px;line-height:1.5;color:#E5534B">{{ exitError }}</span>
+</sc-if>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Button" size="big" on-click="{{ sendExitLead }}" hint-size="100%,58px">{{ exitSendingLabel }}</x-import>
+<span style="font-size:13px;line-height:1.5;color:rgba(var(--frost-rgb),.6)">🔒 Bảo mật - Chỉ dùng để gửi voucher, không spam.</span>
+</div>
+</sc-if>
+</x-import>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;showPromoBanner&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Chuyển đổi&quot;},&quot;showStickyBar&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Chuyển đổi&quot;},&quot;sheetsWebhookUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Nhận đơn&quot;,&quot;label&quot;:&quot;Google Apps Script Web App URL&quot;}}">
@@ -551,6 +570,7 @@ class Component extends DCLogic {
     variant: "Sầu Thái", formSize: "500g", qty: "1", slot: "Bất kỳ",
     name: "", phone: "", address: "", note: "",
     sending: false, sent: false, error: "",
+    exitIntentOpen: false, exitPhone: "", exitSending: false, exitSent: false, exitError: "",
     introPhase: "play", introStage: 1, soundOn: false,
     theme: (typeof localStorage !== "undefined" && localStorage.getItem("sks-theme")) || "light"
   };
@@ -585,6 +605,79 @@ class Component extends DCLogic {
   scrollToPricing() {
     const el = document.getElementById("catalog");
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  /* Exit-intent — chỉ hiện 1 lần / phiên, không spam.
+     Desktop: chuột rời mép trên viewport. Mobile: đã cuộn qua 50% rồi quay lại đầu trang,
+     hoặc 25s không tương tác. */
+  setupExitIntent() {
+    try {
+      if (sessionStorage.getItem("sks-exit-shown")) return;
+    } catch (e) {}
+    const isMobile = window.innerWidth < 768;
+    const trigger = () => {
+      if (this.state.exitIntentOpen) return;
+      try {
+        if (sessionStorage.getItem("sks-exit-shown")) return;
+        sessionStorage.setItem("sks-exit-shown", "1");
+      } catch (e) {}
+      this.setState({ exitIntentOpen: true });
+      cleanup();
+    };
+    let cleanup = () => {};
+    if (!isMobile) {
+      const onMouseLeave = (e) => { if (e.clientY <= 0) trigger(); };
+      document.addEventListener("mouseleave", onMouseLeave);
+      cleanup = () => document.removeEventListener("mouseleave", onMouseLeave);
+    } else {
+      let scrolledHalf = false;
+      const onScroll = () => {
+        const pct = window.scrollY / Math.max(1, document.body.scrollHeight - window.innerHeight);
+        if (pct > 0.5) scrolledHalf = true;
+        else if (scrolledHalf && window.scrollY < 80) trigger();
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      const idleTimer = setTimeout(trigger, 25000);
+      cleanup = () => { window.removeEventListener("scroll", onScroll); clearTimeout(idleTimer); };
+    }
+    this._exitIntentCleanup = cleanup;
+  }
+
+  closeExitIntent() {
+    this.setState({ exitIntentOpen: false });
+  }
+
+  onExitPhone(e) {
+    this.setState({ exitPhone: e.target.value });
+  }
+
+  async sendExitLead() {
+    const phone = this.state.exitPhone.trim();
+    if (!/^[0-9+\s().-]{9,}$/.test(phone)) {
+      this.setState({ exitError: "Số điện thoại chưa đúng — cậu kiểm tra lại giúp tớ nha!" });
+      return;
+    }
+    this.setState({ exitSending: true, exitError: "" });
+    const url = this.props.sheetsWebhookUrl || window.SKS_SHEET_URL || "";
+    try {
+      if (url) {
+        await fetch(url, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+          body: new URLSearchParams({
+            loai_don: "LEAD_EXIT_INTENT",
+            thoi_gian: new Date().toLocaleString("vi-VN"),
+            dien_thoai: phone,
+            ghi_chu: "Khách để lại SĐT qua popup exit-intent, chưa đặt hàng — gọi tư vấn + gửi voucher 20%."
+          }).toString()
+        });
+      }
+      this.setState({ exitSending: false, exitSent: true });
+      this.track("lead", "Lead", { content_name: "exit_intent_voucher" });
+    } catch (e) {
+      this.setState({ exitSending: false, exitError: "Có lỗi khi gửi. Cậu thử lại giúp tớ nhé!" });
+    }
   }
 
   toggleTheme() {
@@ -633,6 +726,7 @@ class Component extends DCLogic {
   componentDidMount() {
     this.initVoucherCountdown();
     this.track("view_content", "ViewContent", { content_name: "Sau Khanh Son Cap Dong" });
+    this.setupExitIntent();
     this.timer = setInterval(() => {
       const now = Date.now();
       this.setState(s => ({
@@ -741,6 +835,7 @@ class Component extends DCLogic {
     }
     const url = this.props.sheetsWebhookUrl || window.SKS_SHEET_URL || "";
     const payload = {
+      loai_don: "DON_HANG",
       thoi_gian: new Date().toLocaleString("vi-VN"),
       san_pham: this.summaryText(),
       loai_sau: s.variant,
@@ -809,6 +904,15 @@ class Component extends DCLogic {
       themeLabel: s.theme === "light" ? "Sáng" : "Tối",
       toggleTheme: () => this.toggleTheme(),
       scrollToPricing: () => this.scrollToPricing(),
+      exitIntentOpen: s.exitIntentOpen,
+      exitNotSent: !s.exitSent,
+      exitSent: s.exitSent,
+      exitPhone: s.exitPhone,
+      exitError: s.exitError,
+      exitSendingLabel: s.exitSending ? "Đang gửi..." : "Nhận voucher 20%",
+      closeExitIntent: () => this.closeExitIntent(),
+      onExitPhone: (e) => this.onExitPhone(e),
+      sendExitLead: () => this.sendExitLead(),
       modalOpen: s.modalOpen,
       selectedProduct: this.summaryText(),
       closeModal: () => this.setState({ modalOpen: false }),
