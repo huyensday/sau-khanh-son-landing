@@ -417,14 +417,15 @@ class Component extends DCLogic {
     introPhase: "play", introStage: 1, soundOn: false
   };
 
-  /* Giá đã công bố trên trang — chỉ có giá túi 500g. Giá 1kg cho Sầu Thái/Musang King
-     CHƯA được xác nhận nên không tự suy ra, tránh báo giá sai cho khách. */
   static PRODUCT_NAMES = {
     "Sầu Thái": "Sầu Thái Khánh Sơn (Monthong)",
     "Musang King": "Musang King Khánh Sơn",
     "Combo Duo Gen Z": "Combo “Duo Gen Z”"
   };
-  static UNIT_PRICE_500G = { "Sầu Thái": 89000, "Musang King": 109000 };
+  static UNIT_PRICE = {
+    "Sầu Thái": { "500g": 89000, "1kg": 178000 },
+    "Musang King": { "500g": 109000, "1kg": 218000 }
+  };
   static COMBO_UNIT_PRICE = 198000;
 
   formatVnd(n) {
@@ -444,13 +445,13 @@ class Component extends DCLogic {
       return name + " — 1kg (500g Thái + 500g Musang King) × " + s.qty + " · " + qtyPrefix + this.formatVnd(total);
     }
 
-    const unit = Component.UNIT_PRICE_500G[s.variant];
-    if (s.formSize === "500g" && unit) {
+    const unit = (Component.UNIT_PRICE[s.variant] || {})[s.formSize];
+    if (unit) {
       const total = unit * qtyNum;
-      return name + " — Túi 500g × " + s.qty + " · " + qtyPrefix + this.formatVnd(total);
+      return name + " — Túi " + s.formSize + " × " + s.qty + " · " + qtyPrefix + this.formatVnd(total);
     }
-    /* Giá túi 1kg chưa có trong bảng giá — không bịa số, chỉ hiện tên + size đã chọn */
-    return name + " — Túi " + s.formSize + " × " + s.qty + " · giá 1kg đang cập nhật, tớ báo giá khi xác nhận đơn nha";
+    /* phòng hờ nếu sau này thêm size chưa có giá — không bịa số */
+    return name + " — Túi " + s.formSize + " × " + s.qty + " · giá đang cập nhật, tớ báo giá khi xác nhận đơn nha";
   }
 
   componentDidMount() {
