@@ -760,7 +760,7 @@ function PainPointCard({
       display: "flex",
       gap: "var(--space-4)",
       background: "var(--surface-negative)",
-      border: "1px solid rgba(255,255,255,.07)",
+      border: "1px solid var(--border-card)",
       borderRadius: "var(--radius-xs)",
       padding: "var(--space-5)",
       ...style
@@ -768,7 +768,7 @@ function PainPointCard({
   }, /*#__PURE__*/React.createElement(__ds_scope.Icon, {
     name: icon || "triangle-alert",
     size: 26,
-    color: "rgba(224,224,224,.55)",
+    color: "var(--text-body)",
     style: {
       marginTop: "2px"
     }
@@ -785,7 +785,7 @@ function PainPointCard({
       fontWeight: "var(--weight-semibold)",
       fontSize: "17px",
       lineHeight: "var(--leading-card-heading)",
-      color: "rgba(255,255,255,.82)"
+      color: "var(--text-heading)"
     }
   }, title), body && /*#__PURE__*/React.createElement("p", {
     style: {
@@ -793,7 +793,7 @@ function PainPointCard({
       fontFamily: "var(--font-body)",
       fontSize: "15px",
       lineHeight: "var(--leading-body)",
-      color: "rgba(224,224,224,.62)",
+      color: "var(--text-body)",
       textWrap: "pretty"
     }
   }, body)));
