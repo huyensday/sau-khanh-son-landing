@@ -361,9 +361,47 @@ window.SKS_SHEET_URL="https://script.google.com/macros/s/AKfycbyaDGLiJDRGAsptLhW
 <div style="display:flex;flex-direction:column;gap:12px">
 <span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--durian-gold)">FAQ</span>
 <h2 style="margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:clamp(26px,4.6vw,36px);line-height:1.3;letter-spacing:-.02em;color:var(--text-heading)">Câu hỏi thường gặp</h2>
-<p style="margin:0;font-size:16px;line-height:1.6;color:var(--text-body)">Còn thắc mắc gì cứ nhắn tớ nha!</p>
 </div>
-<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Accordion" items="{{ faqItems }}" hint-size="100%,260px"></x-import>
+<div style="display:flex;flex-direction:column;gap:12px">
+<details style="background:var(--surface-raised);border:1px solid var(--border-card);border-radius:12px;padding:16px 20px">
+<summary style="cursor:pointer;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text-heading)">Ăn liền hay rã đông?</summary>
+<p style="margin:10px 0 0;font-size:15px;line-height:1.6;color:var(--text-body)">Ăn liền như kem, để 5-10 phút là dẻo như bơ.</p>
+</details>
+<details style="background:var(--surface-raised);border:1px solid var(--border-card);border-radius:12px;padding:16px 20px">
+<summary style="cursor:pointer;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text-heading)">Bảo quản bao lâu?</summary>
+<p style="margin:10px 0 0;font-size:15px;line-height:1.6;color:var(--text-body)">Ngăn đá -18°C có thể bảo quản khoảng 6 tháng.</p>
+</details>
+<details style="background:var(--surface-raised);border:1px solid var(--border-card);border-radius:12px;padding:16px 20px">
+<summary style="cursor:pointer;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text-heading)">Có bao bù sượng không?</summary>
+<p style="margin:10px 0 0;font-size:15px;line-height:1.6;color:var(--text-body)">Bao 1 đổi 1. Cậu quay video lúc mở túi giúp tớ nhé.</p>
+</details>
+<details style="background:var(--surface-raised);border:1px solid var(--border-card);border-radius:12px;padding:16px 20px">
+<summary style="cursor:pointer;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text-heading)">Giao 2H có thật không? Phí ship?</summary>
+<p style="margin:10px 0 0;font-size:15px;line-height:1.6;color:var(--text-body)">Nội thành SG/Nha Trang hỗ trợ giao 2H. Freeship đơn trên 300K, đơn dưới 300K phí ship từ 30K tùy khu vực.</p>
+</details>
+<details style="background:var(--surface-raised);border:1px solid var(--border-card);border-radius:12px;padding:16px 20px">
+<summary style="cursor:pointer;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text-heading)">Sầu Khánh Sơn khác gì miền Tây?</summary>
+<p style="margin:10px 0 0;font-size:15px;line-height:1.6;color:var(--text-body)">Vườn ở độ cao khoảng 800m, chín chậm, cơm vàng đậm và hạt lép.</p>
+</details>
+<details style="background:var(--surface-raised);border:1px solid var(--border-card);border-radius:12px;padding:16px 20px">
+<summary style="cursor:pointer;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text-heading)">Có bán sỉ không?</summary>
+<p style="margin:10px 0 0;font-size:15px;line-height:1.6;color:var(--text-body)">Có. Liên hệ Zalo để lấy sỉ từ 10kg.</p>
+</details>
+</div>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Ăn liền hay rã đông?", "acceptedAnswer": { "@type": "Answer", "text": "Ăn liền như kem, để 5-10 phút là dẻo như bơ." } },
+    { "@type": "Question", "name": "Bảo quản bao lâu?", "acceptedAnswer": { "@type": "Answer", "text": "Ngăn đá -18°C có thể bảo quản khoảng 6 tháng." } },
+    { "@type": "Question", "name": "Có bao bù sượng không?", "acceptedAnswer": { "@type": "Answer", "text": "Bao 1 đổi 1. Quay video lúc mở túi để được hỗ trợ." } },
+    { "@type": "Question", "name": "Giao 2H có thật không? Phí ship?", "acceptedAnswer": { "@type": "Answer", "text": "Nội thành TP.HCM và Nha Trang hỗ trợ giao 2H. Freeship đơn trên 300.000đ, đơn dưới 300.000đ phí ship từ 30.000đ tùy khu vực." } },
+    { "@type": "Question", "name": "Sầu Khánh Sơn khác gì miền Tây?", "acceptedAnswer": { "@type": "Answer", "text": "Vườn ở độ cao khoảng 800m, chín chậm, cơm vàng đậm và hạt lép." } },
+    { "@type": "Question", "name": "Có bán sỉ không?", "acceptedAnswer": { "@type": "Answer", "text": "Có bán sỉ từ 10kg, liên hệ qua Zalo." } }
+  ]
+}
+</script>
 </div>
 </section>
 
@@ -773,12 +811,6 @@ class Component extends DCLogic {
         "Bạn chỉ cần QUAY VIDEO KHI BÓC HÀNG, gửi ngay cho tớ.",
         "Tớ hoàn tiền 100% hoặc gửi túi mới ngay lập tức mà không câu nệ!"
       ],
-      faqItems: [
-        { q: "Sầu cấp đông ăn có bị mất vị không?", a: "Không nha! Công nghệ cấp đông nhanh giúp giữ trọn độ béo ngậy và độ dẻo của sầu Khánh Sơn. Ăn mát lạnh như kem sầu riêng luôn!" },
-        { q: "Rã đông bao lâu thì ăn ngon nhất?", a: "Để nhiệt độ phòng 10-15 phút cho mềm nhẹ là ăn dẻo như kem gelato." },
-        { q: "Ship xa có bị tan chảy hay hư hỏng không?", a: "Bên tớ đóng thùng xốp giữ nhiệt + đá khô chuyên dụng âm 40°C. Đảm bảo 24-48H tới tay bạn vẫn giữ độ đông lạnh chuẩn xịn." },
-        { q: "Làm sao để nhận voucher giảm 20%?", a: "Bạn chỉ cần đặt từ 2 túi (hoặc Combo Duo Gen Z), hệ thống sẽ tự động gửi mã voucher 20% vào SĐT đăng ký!" }
-      ]
     };
   }
 }
