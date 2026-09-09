@@ -507,7 +507,7 @@ window.SKS_SHEET_URL="https://script.google.com/macros/s/AKfycbyaDGLiJDRGAsptLhW
 </div>
 </sc-if>
 
-<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Modal" open="{{ modalOpen }}" on-close="{{ closeModal }}" width="{{ 560 }}" title="XÁC NHẬN ĐƠN HÀNG GIAO LẠNH TẬN TAY" subtitle="Điền thông tin, tớ gọi xác nhận rồi đóng thùng lạnh giao ngay." hint-size="0px,0px">
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Modal" open="{{ modalOpen }}" on-close="{{ closeModal }}" width="{{ 820 }}" title="XÁC NHẬN ĐƠN HÀNG GIAO LẠNH TẬN TAY" subtitle="Điền thông tin, tớ gọi xác nhận rồi đóng thùng lạnh giao ngay." hint-size="0px,0px">
 <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;flex-direction:column;gap:16px;align-items:flex-start;padding:8px 0">
 <x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Badge" tone="solidGreen" hint-size="200px,26px">🎉 Đã nhận đơn!</x-import>
@@ -516,8 +516,8 @@ window.SKS_SHEET_URL="https://script.google.com/macros/s/AKfycbyaDGLiJDRGAsptLhW
 </div>
 </sc-if>
 <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
-<div style="display:flex;flex-direction:column;gap:20px">
-<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Input" label="Sản phẩm bạn chọn" value="{{ selectedProduct }}" read-only="{{ true }}" hint-size="100%,72px"></x-import>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:28px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:20px;min-width:0">
 <x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.OptionGroup" label="Loại sầu" options="{{ variantOptions }}" value="{{ variant }}" on-change="{{ setVariant }}" hint-size="100%,90px"></x-import>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:clamp(16px,3vw,24px)">
 <x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.OptionGroup" label="Size túi" options="{{ sizeOptions }}" value="{{ formSize }}" on-change="{{ setFormSize }}" hint-size="100%,90px"></x-import>
@@ -535,6 +535,18 @@ window.SKS_SHEET_URL="https://script.google.com/macros/s/AKfycbyaDGLiJDRGAsptLhW
 </sc-if>
 <x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Button" size="big" disabled="{{ sending }}" on-click="{{ submitOrder }}" hint-size="100%,58px">{{ submitLabel }}</x-import>
 <span style="font-size:13px;line-height:1.5;color:rgba(var(--frost-rgb),.6)">🔒 Bảo mật - Chỉ dùng để giao sầu</span>
+</div>
+<div style="background:rgba(255,255,255,.04);border:1px solid var(--border-card-hover);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px;min-width:0">
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--durian-gold)">Tóm tắt đơn hàng</span>
+<div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:13px;color:rgba(var(--frost-rgb),.6)">Sản phẩm</span><span style="font-size:15px;font-weight:600;color:rgba(var(--frost-rgb),1)">{{ orderName }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:10px;font-size:14px"><span style="color:rgba(var(--frost-rgb),.75)">Quy cách</span><span style="color:rgba(var(--frost-rgb),1)">{{ orderSizeLabel }} × {{ orderQtyLabel }}</span></div>
+<div style="height:1px;background:var(--border-card)"></div>
+<div style="display:flex;justify-content:space-between;gap:10px;font-size:14px"><span style="color:rgba(var(--frost-rgb),.75)">Giá</span><span style="color:rgba(var(--frost-rgb),1)">{{ orderSubtotal }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:10px;font-size:14px"><span style="color:rgba(var(--frost-rgb),.75)">Voucher</span><span style="color:var(--garden-green-bright)">{{ orderVoucherLabel }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:10px;font-size:14px"><span style="color:rgba(var(--frost-rgb),.75)">Phí ship</span><span style="color:rgba(var(--frost-rgb),1)">{{ orderShipLabel }}</span></div>
+<div style="height:1px;background:var(--border-card)"></div>
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><span style="font-weight:700;font-size:15px;color:rgba(var(--frost-rgb),1)">Tổng tiền</span><span class="price" style="font-weight:900;font-size:24px;color:var(--durian-gold)">{{ orderTotal }}</span></div>
+</div>
 </div>
 </sc-if>
 </x-import>
@@ -723,6 +735,22 @@ class Component extends DCLogic {
     return name + " — Túi " + s.formSize + " × " + s.qty + " · giá đang cập nhật, tớ báo giá khi xác nhận đơn nha";
   }
 
+  /* Tóm tắt đơn hàng kiểu Shopee — dùng để render cột phải trong form đặt hàng */
+  computeOrder() {
+    const s = this.state;
+    const name = Component.PRODUCT_NAMES[s.variant] || s.variant;
+    const qtyNum = s.qty === "4+" ? 4 : (parseInt(s.qty, 10) || 1);
+    const isCombo = s.variant === "Combo Duo Gen Z";
+    const unit = isCombo ? Component.COMBO_UNIT_PRICE : (Component.UNIT_PRICE[s.variant] || {})[s.formSize] || 0;
+    const subtotal = unit * qtyNum;
+    const remainingMs = s.voucherExpiresAt ? s.voucherExpiresAt - s.nowTick : 0;
+    const voucherActive = !s.voucherExpired && remainingMs > 0 && (isCombo || qtyNum >= 2);
+    const voucherAmount = voucherActive ? Math.round(subtotal * 0.2) : 0;
+    const shipFee = subtotal - voucherAmount >= 300000 || subtotal === 0 ? 0 : 30000;
+    const total = subtotal - voucherAmount + shipFee;
+    return { name, qtyLabel: s.qty === "4+" ? "từ 4 túi" : qtyNum + " túi", sizeLabel: isCombo ? "1kg (Combo)" : s.formSize, subtotal, voucherAmount, shipFee, total, voucherActive };
+  }
+
   componentDidMount() {
     this.initVoucherCountdown();
     this.track("view_content", "ViewContent", { content_name: "Sau Khanh Son Cap Dong" });
@@ -875,6 +903,7 @@ class Component extends DCLogic {
     const mm = String(Math.floor((remainingSec % 3600) / 60)).padStart(2, "0");
     const ss = String(remainingSec % 60).padStart(2, "0");
     const voucherExpired = s.voucherExpired || remainingMs <= 0;
+    const order = this.computeOrder();
     return {
       showPromoBanner: this.props.showPromoBanner ?? true,
       showStickyBar: this.props.showStickyBar ?? true,
@@ -915,6 +944,13 @@ class Component extends DCLogic {
       sendExitLead: () => this.sendExitLead(),
       modalOpen: s.modalOpen,
       selectedProduct: this.summaryText(),
+      orderName: order.name,
+      orderQtyLabel: order.qtyLabel,
+      orderSizeLabel: order.sizeLabel,
+      orderSubtotal: this.formatVnd(order.subtotal),
+      orderVoucherLabel: order.voucherActive ? "-" + this.formatVnd(order.voucherAmount) + " (20%)" : "Không áp dụng",
+      orderShipLabel: order.shipFee === 0 ? "Miễn phí" : this.formatVnd(order.shipFee),
+      orderTotal: this.formatVnd(order.total),
       closeModal: () => this.setState({ modalOpen: false }),
       submitOrder: () => this.send(),
       submitLabel: s.sending ? "Đang giữ chỗ..." : "Đặt hàng ngay",
