@@ -15,6 +15,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="./support.js"></script>
+<!-- GTM/Facebook Pixel — thay GTM-XXXXXXX và FB_PIXEL_ID bằng ID thật của chị trước khi chạy ads -->
+<script>
+window.dataLayer = window.dataLayer || [];
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-XXXXXXX');
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', 'FB_PIXEL_ID');
+fbq('track', 'PageView');
+</script>
 </head>
 <body>
 <x-dc>
@@ -568,6 +576,12 @@ class Component extends DCLogic {
     this.setState({ voucherExpiresAt: expiresAt, voucherExpired: expiresAt <= Date.now() });
   }
 
+  /* GTM + FB Pixel — chỉ báo event, không tự fire Purchase ngoài lúc submit đơn thành công */
+  track(gtmEvent, fbEvent, params) {
+    try { window.dataLayer && window.dataLayer.push({ event: gtmEvent, ...params }); } catch (e) {}
+    try { window.fbq && window.fbq("track", fbEvent, params); } catch (e) {}
+  }
+
   scrollToPricing() {
     const el = document.getElementById("catalog");
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -618,6 +632,7 @@ class Component extends DCLogic {
 
   componentDidMount() {
     this.initVoucherCountdown();
+    this.track("view_content", "ViewContent", { content_name: "Sau Khanh Son Cap Dong" });
     this.timer = setInterval(() => {
       const now = Date.now();
       this.setState(s => ({
@@ -710,10 +725,12 @@ class Component extends DCLogic {
       variant: variant || st.variant,
       formSize: size || st.formSize
     }));
+    if (!trial) this.track("add_to_cart", "AddToCart", { content_name: variant || this.state.variant });
   }
 
   async send() {
     const s = this.state;
+    this.track("initiate_checkout", "InitiateCheckout", { content_name: this.summaryText() });
     if (!s.name.trim() || !s.phone.trim() || !s.address.trim()) {
       this.setState({ error: "Bạn điền giúp tớ họ tên, số điện thoại và địa chỉ nha!" });
       return;
@@ -749,6 +766,7 @@ class Component extends DCLogic {
       }
       this.setState({ sending: false, sent: true });
       this.fireConfetti();
+      this.track("purchase", "Purchase", { content_name: this.summaryText(), currency: "VND" });
     } catch (e) {
       this.setState({ sending: false, error: "Có lỗi khi gửi đơn. Cậu thử lại giúp tớ nhé, hoặc nhắn Zalo cho tớ luôn cũng được!" });
     }
