@@ -396,12 +396,48 @@ window.SKS_SHEET_URL="https://script.google.com/macros/s/AKfycbyaDGLiJDRGAsptLhW
 <script type="text/x-dc" data-dc-script data-props="{&quot;showPromoBanner&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Chuyển đổi&quot;},&quot;showStickyBar&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Chuyển đổi&quot;},&quot;sheetsWebhookUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Nhận đơn&quot;,&quot;label&quot;:&quot;Google Apps Script Web App URL&quot;}}">
 class Component extends DCLogic {
   state = {
-    modalOpen: false, product: "", thaiSize: "500g", musangSize: "500g", seconds: 899,
+    modalOpen: false, isTrial: false, thaiSize: "500g", musangSize: "500g", seconds: 899,
     variant: "Sầu Thái", formSize: "500g", qty: "1", slot: "Bất kỳ",
     name: "", phone: "", address: "", note: "",
     sending: false, sent: false, error: "",
     introPhase: "play", introStage: 1, soundOn: false
   };
+
+  /* Giá đã công bố trên trang — chỉ có giá túi 500g. Giá 1kg cho Sầu Thái/Musang King
+     CHƯA được xác nhận nên không tự suy ra, tránh báo giá sai cho khách. */
+  static PRODUCT_NAMES = {
+    "Sầu Thái": "Sầu Thái Khánh Sơn (Monthong)",
+    "Musang King": "Musang King Khánh Sơn",
+    "Combo Duo Gen Z": "Combo “Duo Gen Z”"
+  };
+  static UNIT_PRICE_500G = { "Sầu Thái": 89000, "Musang King": 109000 };
+  static COMBO_UNIT_PRICE = 198000;
+
+  formatVnd(n) {
+    return n.toLocaleString("vi-VN") + "đ";
+  }
+
+  summaryText() {
+    const s = this.state;
+    if (s.isTrial) return "Đăng ký trải nghiệm dùng thử";
+
+    const name = Component.PRODUCT_NAMES[s.variant] || s.variant;
+    const qtyNum = parseInt(s.qty, 10) || 1;
+    const qtyPrefix = s.qty === "4+" ? "từ " : "";
+
+    if (s.variant === "Combo Duo Gen Z") {
+      const total = Component.COMBO_UNIT_PRICE * qtyNum;
+      return name + " — 1kg (500g Thái + 500g Musang King) × " + s.qty + " · " + qtyPrefix + this.formatVnd(total);
+    }
+
+    const unit = Component.UNIT_PRICE_500G[s.variant];
+    if (s.formSize === "500g" && unit) {
+      const total = unit * qtyNum;
+      return name + " — Túi 500g × " + s.qty + " · " + qtyPrefix + this.formatVnd(total);
+    }
+    /* Giá túi 1kg chưa có trong bảng giá — không bịa số, chỉ hiện tên + size đã chọn */
+    return name + " — Túi " + s.formSize + " × " + s.qty + " · giá 1kg đang cập nhật, tớ báo giá khi xác nhận đơn nha";
+  }
 
   componentDidMount() {
     this.timer = setInterval(() => {
@@ -467,9 +503,9 @@ class Component extends DCLogic {
     this.setState({ soundOn: on });
   }
 
-  open(product, variant, size) {
+  open(variant, size, trial) {
     this.setState(st => ({
-      modalOpen: true, product, sent: false, error: "",
+      modalOpen: true, isTrial: !!trial, sent: false, error: "",
       variant: variant || st.variant,
       formSize: size || st.formSize
     }));
@@ -488,7 +524,7 @@ class Component extends DCLogic {
     const url = this.props.sheetsWebhookUrl || window.SKS_SHEET_URL || "";
     const payload = {
       thoi_gian: new Date().toLocaleString("vi-VN"),
-      san_pham: s.product,
+      san_pham: this.summaryText(),
       loai_sau: s.variant,
       size_tui: s.formSize,
       so_luong: s.qty,
@@ -542,7 +578,7 @@ class Component extends DCLogic {
       goLanding: () => this.goLanding(),
       skipIntro: () => this.finishIntro(),
       modalOpen: s.modalOpen,
-      selectedProduct: s.product,
+      selectedProduct: this.summaryText(),
       closeModal: () => this.setState({ modalOpen: false }),
       submitOrder: () => this.send(),
       submitLabel: s.sending ? "ĐANG GỬI ĐƠN…" : "BẤM GỬI ĐƠN — SHOP GIAO NGAY",
@@ -587,10 +623,10 @@ class Component extends DCLogic {
       musangSize: s.musangSize,
       setThaiSize: v => this.setState({ thaiSize: v }),
       setMusangSize: v => this.setState({ musangSize: v }),
-      orderThai: () => this.open("Sầu Thái Khánh Sơn (Monthong) — Túi " + s.thaiSize + " · 89.000đ", "Sầu Thái", s.thaiSize),
-      orderMusang: () => this.open("Musang King Khánh Sơn — Túi " + s.musangSize + " · 109.000đ", "Musang King", s.musangSize),
-      orderCombo: () => this.open("Combo “Duo Gen Z” 1kg — 198.000đ + voucher 20%", "Combo Duo Gen Z", "1kg"),
-      orderTrial: () => this.open("Đăng ký trải nghiệm dùng thử"),
+      orderThai: () => this.open("Sầu Thái", s.thaiSize),
+      orderMusang: () => this.open("Musang King", s.musangSize),
+      orderCombo: () => this.open("Combo Duo Gen Z", "1kg"),
+      orderTrial: () => this.open(s.variant, s.formSize, true),
       thaiSpecs: [
         { label: "Giá ưu đãi", value: "89.000đ / Túi 500g (giá gốc 120.000đ)" },
         { label: "Cơm sầu", value: "Vàng nhạt, dày dặn, ráo tay (không bết nhão)." },
