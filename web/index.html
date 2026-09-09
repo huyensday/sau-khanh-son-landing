@@ -389,10 +389,9 @@ window.SKS_SHEET_URL="https://script.google.com/macros/s/AKfycbyaDGLiJDRGAsptLhW
 <div style="position:sticky;bottom:0;z-index:45;background:rgba(var(--chrome-rgb),.92);backdrop-filter:blur(14px);border-top:1px solid rgba(243,156,18,.4)">
 <div id="stickyBarInner" style="max-width:1200px;margin:0 auto;padding:12px clamp(16px,4vw,24px);display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center;justify-content:space-between">
 <div style="display:flex;flex-direction:column;gap:2px;min-width:0">
-<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--garden-green-bright)">Ưu đãi voucher 20% còn</span>
-<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:900;font-size:clamp(20px,3vw,24px);line-height:1.1;letter-spacing:.02em;color:var(--text-heading)">{{ countdown }}</span>
+<span style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:900;font-size:clamp(15px,3vw,18px);line-height:1.2;letter-spacing:.01em;color:{{ voucherLabelColor }}">{{ countdown }}</span>
 </div>
-<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Button" on-click="{{ orderCombo }}" hint-size="300px,48px">ĐẶT MUA 2 TÚI — GIẢM 20%</x-import>
+<x-import component-from-global-scope="SUKhNhSNDesignSystem_962022.Button" on-click="{{ orderCombo }}" hint-size="300px,48px">{{ comboButtonLabel }}</x-import>
 </div>
 </div>
 </sc-if>
@@ -432,14 +431,39 @@ window.SKS_SHEET_URL="https://script.google.com/macros/s/AKfycbyaDGLiJDRGAsptLhW
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;showPromoBanner&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Chuyển đổi&quot;},&quot;showStickyBar&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Chuyển đổi&quot;},&quot;sheetsWebhookUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Nhận đơn&quot;,&quot;label&quot;:&quot;Google Apps Script Web App URL&quot;}}">
 class Component extends DCLogic {
+  static VOUCHER_CAMPAIGN_ID = "sks-voucher-2024-12h-v1";
+  static VOUCHER_DURATION_MS = 12 * 60 * 60 * 1000;
+
   state = {
-    modalOpen: false, isTrial: false, thaiSize: "500g", musangSize: "500g", seconds: 899,
+    modalOpen: false, isTrial: false, thaiSize: "500g", musangSize: "500g",
+    voucherExpiresAt: null, voucherExpired: false, nowTick: Date.now(),
     variant: "Sầu Thái", formSize: "500g", qty: "1", slot: "Bất kỳ",
     name: "", phone: "", address: "", note: "",
     sending: false, sent: false, error: "",
     introPhase: "play", introStage: 1, soundOn: false,
     theme: (typeof localStorage !== "undefined" && localStorage.getItem("sks-theme")) || "light"
   };
+
+  /* Voucher 12h thật, lưu mốc hết hạn qua localStorage — reload không reset.
+     Đổi VOUCHER_CAMPAIGN_ID ở trên nếu muốn chạy lại campaign mới. */
+  initVoucherCountdown() {
+    let expiresAt = null;
+    try {
+      const savedCampaign = localStorage.getItem("sks-voucher-campaign");
+      const savedExpiry = parseInt(localStorage.getItem("sks-voucher-expiry"), 10);
+      if (savedCampaign === Component.VOUCHER_CAMPAIGN_ID && savedExpiry) {
+        expiresAt = savedExpiry;
+      }
+    } catch (e) {}
+    if (!expiresAt) {
+      expiresAt = Date.now() + Component.VOUCHER_DURATION_MS;
+      try {
+        localStorage.setItem("sks-voucher-campaign", Component.VOUCHER_CAMPAIGN_ID);
+        localStorage.setItem("sks-voucher-expiry", String(expiresAt));
+      } catch (e) {}
+    }
+    this.setState({ voucherExpiresAt: expiresAt, voucherExpired: expiresAt <= Date.now() });
+  }
 
   toggleTheme() {
     const next = this.state.theme === "light" ? "dark" : "light";
@@ -485,8 +509,13 @@ class Component extends DCLogic {
   }
 
   componentDidMount() {
+    this.initVoucherCountdown();
     this.timer = setInterval(() => {
-      this.setState(s => ({ seconds: s.seconds > 0 ? s.seconds - 1 : 899 }));
+      const now = Date.now();
+      this.setState(s => ({
+        nowTick: now,
+        voucherExpired: s.voucherExpiresAt ? now >= s.voucherExpiresAt : s.voucherExpired
+      }));
     }, 1000);
 
     this.stageTimers = [];
@@ -599,12 +628,19 @@ class Component extends DCLogic {
 
   renderVals() {
     const s = this.state;
-    const mm = String(Math.floor(s.seconds / 60)).padStart(2, "0");
-    const ss = String(s.seconds % 60).padStart(2, "0");
+    const remainingMs = s.voucherExpiresAt ? Math.max(0, s.voucherExpiresAt - s.nowTick) : 0;
+    const remainingSec = Math.floor(remainingMs / 1000);
+    const hh = String(Math.floor(remainingSec / 3600)).padStart(2, "0");
+    const mm = String(Math.floor((remainingSec % 3600) / 60)).padStart(2, "0");
+    const ss = String(remainingSec % 60).padStart(2, "0");
+    const voucherExpired = s.voucherExpired || remainingMs <= 0;
     return {
       showPromoBanner: this.props.showPromoBanner ?? true,
       showStickyBar: this.props.showStickyBar ?? true,
-      countdown: "00:" + mm + ":" + ss,
+      voucherExpired: voucherExpired,
+      countdown: voucherExpired ? "Voucher đã hết hạn" : "🎁 Voucher 20% còn " + hh + ":" + mm + ":" + ss,
+      voucherLabelColor: voucherExpired ? "var(--text-body)" : "var(--text-heading)",
+      comboButtonLabel: voucherExpired ? "ĐẶT MUA 2 TÚI" : "ĐẶT MUA 2 TÚI — GIẢM 20%",
       introVisible: s.introPhase !== "gone",
       introOpacity: s.introPhase === "fading" ? 0 : 1,
       introPointer: s.introPhase === "fading" ? "none" : "auto",
